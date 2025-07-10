@@ -1,11 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View } from 'react-native';
-
+import React from 'react';
+import { View, Text } from 'react-native';
+import { Provider } from 'react-redux';
+import { store } from '@contexts/store';
+import RootNavigator from '@navigation/RootNavigator'; // kendi navigasyonunuz
+import './global.css';
 const App = () => {
    return (
-      <View>
-         <Text>Mobil Template 3</Text>
-      </View>
+      <Provider store={store}>
+         <View>
+            <Text>Selam</Text>
+            <Text>Merhaba</Text>
+            <Text>Merhaba</Text>
+            <Text>Merhaba</Text>
+            <Text>Merhaba</Text>
+            <Text className={`text-green-500`}>Merhaba</Text>
+         </View>
+      </Provider>
    );
 };
 
