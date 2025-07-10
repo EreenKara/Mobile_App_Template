@@ -1,0 +1,44 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "types": ["node"],
+    "typeRoots": ["./node_modules/@types", "./types", "./env"],
+    "baseUrl": ".",
+    "paths": {
+      "*": ["types/*"],
+      "@env": ["env/env.d.ts"],
+      "@gorhom/bottom-sheet": ["types/bottom-sheet.d.ts"],
+      "@react-navigation/native": [
+        "node_modules/@react-navigation/native/lib/typescript/src"
+      ],
+      "@react-navigation/native-stack": [
+        "node_modules/@react-navigation/native-stack/lib/typescript/src"
+      ],
+      "@components/*": ["Components/*"],
+      "@screens/*": ["src/screens/*"],
+      "@assets/*": ["assets/*"],
+      "@services/*": ["src/services/*"],
+      "@navigation/*": ["src/navigation/*"],
+      "@styles/*": ["styles/*"],
+      "@utility/*": ["src/utility/*"],
+      "@shared/*": ["src/shared/*"],
+      "@entities/*": ["entities/*"],
+      "@viewmodels/*": ["viewmodels/*"],
+      "@enums/*": ["enums/*"],
+      "@icomponents/*": ["src/components/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@hooks/*": ["src/hooks/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "types/**/*",
+    "**/*.ts",
+    "**/*.tsx",
+    "entities",
+    "env",
+    "types/fonts.d.ts",
+    "Components/ChartLegend"
+  ],
+  "exclude": ["node_modules", "dist", "build"]
+}
