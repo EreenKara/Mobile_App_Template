@@ -1,67 +1,32 @@
 {
-  "extends": "expo/tsconfig.base",
-  "compilerOptions": {
-    "types": [
-      "node"
-    ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./module_tsx_types"
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "@env": [
-        "env/env.d.ts"
-      ],
-      "@mycomponents/*": [
-        "MyComponents/*"
-      ],
-      "@screens/*": [
-        "src/screens/*"
-      ],
-      "@assets/*": [
-        "assets/*"
-      ],
-      "@services/*": [
-        "src/services/*"
-      ],
-      "@navigation/*": [
-        "src/navigation/*"
-      ],
-      "@styles/*": [
-        "styles/*"
-      ],
-      "@utility/*": [
-        "src/utility/*"
-      ],
-      "@shared/*": [
-        "src/shared/*"
-      ],
-      "@apptypes/*": [
-        "src/types/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@contexts/*": [
-        "src/contexts/*"
-      ],
-      "@hooks/*": [
-        "src/hooks/*"
-      ]
-    }
-  },
-  "include": [
-    "src/**/*",
-    "module_tsx_types/**/*",
-    "**/*.ts",
-    "**/*.tsx",
-    "env",
-    "nativewind-env.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build"
-  ]
+   "extends": "expo/tsconfig.base",
+   "compilerOptions": {
+      "types": ["node"],
+      "typeRoots": ["./node_modules/@types", "./module_tsx_types"],
+      "baseUrl": ".",
+      "paths": {
+         "@env": ["env/env.d.ts"],
+         "@mycomponents/*": ["MyComponents/*"],
+         "@screens/*": ["src/screens/*"],
+         "@assets/*": ["assets/*"],
+         "@services/*": ["src/services/*"],
+         "@navigation/*": ["src/navigation/*"],
+         "@styles/*": ["styles/*"],
+         "@utility/*": ["src/utility/*"],
+         "@shared/*": ["src/shared/*"],
+         "@apptypes/*": ["src/types/*"],
+         "@components/*": ["src/components/*"],
+         "@contexts/*": ["src/contexts/*"],
+         "@hooks/*": ["src/hooks/*"]
+      }
+   },
+   "include": [
+      "src/**/*",
+      "module_tsx_types/**/*",
+      "**/*.ts",
+      "**/*.tsx",
+      "env",
+      "nativewind-env.d.ts"
+   ],
+   "exclude": ["node_modules", "dist", "build"]
 }

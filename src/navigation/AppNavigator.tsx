@@ -15,6 +15,7 @@ const MainNavigator: React.FC = () => {
 
    return (
       <Tab.Navigator
+         id={undefined}
          screenOptions={({ route }) => ({
             headerShown: false,
             tabBarStyle: {

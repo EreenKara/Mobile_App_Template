@@ -13,7 +13,7 @@ const App = () => {
             <Text>Merhaba</Text>
             <Text>Merhaba</Text>
             <Text>Merhaba</Text>
-            <Text className={`text-green-500`}>Merhaba</Text>
+            <Text className={`text-appbuttonText`}>Merhaba</Text>
          </View>
       </Provider>
    );
