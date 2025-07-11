@@ -1,59 +1,28 @@
-import Colors, {ColorsSchema} from '@styles/common/colors';
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {useStyles} from '@hooks/Modular/use.styles';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 interface RadioButtonComponentProps {
-  label: string;
-  selected: boolean;
-  onPress: () => void;
+   label: string;
+   selected: boolean;
+   onPress: () => void;
 }
 
 const RadioButtonComponent: React.FC<RadioButtonComponentProps> = ({
-  label,
-  selected,
-  onPress,
+   label,
+   selected,
+   onPress,
 }) => {
-  const styles = useStyles(createStyles);
-  return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <View style={[styles.radioCircle, selected && styles.selectedRadio]}>
-        {selected && <View style={styles.radioInnerCircle} />}
-      </View>
-      <Text style={styles.label}>{label}</Text>
-    </TouchableOpacity>
-  );
+   return (
+      <TouchableOpacity onPress={onPress} className="flex-row items-center my-0.5">
+         <View
+            className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full border-2 border-appButton mr-2 justify-center items-center ${
+               selected ? 'border-appButton' : ''
+            }`}>
+            {selected && <View className="w-2.5 h-2.5 rounded-full bg-appButton" />}
+         </View>
+         <Text className="text-base text-black font-appFont">{label}</Text>
+      </TouchableOpacity>
+   );
 };
-
-const createStyles = (colors: ColorsSchema) =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginVertical: 4,
-    },
-    radioCircle: {
-      height: 20,
-      width: 20,
-      borderRadius: 10,
-      borderWidth: 2,
-      borderColor: colors.button,
-      marginRight: 8,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    selectedRadio: {
-      borderColor: colors.button,
-    },
-    radioInnerCircle: {
-      height: 10,
-      width: 10,
-      borderRadius: 5,
-      backgroundColor: colors.button,
-    },
-    label: {
-      fontSize: 16,
-    },
-  });
 
 export default RadioButtonComponent;

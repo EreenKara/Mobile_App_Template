@@ -1,72 +1,43 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  ViewStyle,
-  TextStyle,
-  TouchableOpacityProps,
-  View,
-  StyleProp,
-} from 'react-native';
-import {createStyles} from './Button.style';
-import Colors from '@styles/common/colors';
-import {useStyles} from '@hooks/Modular/use.styles';
-
-interface ButtonProps extends TouchableOpacityProps {
-  title: string;
-  onPress: () => void;
-  style?: StyleProp<ViewStyle>;
-  textStyle?: TextStyle;
-  disabled?: boolean;
-  variant?: 'primary' | 'outline';
-  leftIcon?: React.ReactNode;
+import { TouchableOpacity, Text, View } from 'react-native';
+import resolveConfig from 'tailwindcss/resolveConfig';
+import tailwindConfig from '../../tailwind.config.js';
+const fullConfig = resolveConfig(tailwindConfig);
+interface ButtonProps {
+   title: string;
+   onPress: () => void;
+   style?: string;
+   textStyle?: string;
+   disabled?: boolean;
+   leftIcon?: React.ReactNode;
 }
 
 const ButtonComponent: React.FC<ButtonProps> = ({
-  title,
-  onPress,
-  style,
-  textStyle,
-  disabled = false,
-  variant = Colors.getThemeName(),
-  leftIcon,
-  ...props
+   title,
+   onPress,
+   style = '',
+   textStyle = '',
+   disabled = false,
+   leftIcon,
+   ...props
 }) => {
-  const styles = useStyles(createStyles);
+   const baseStyle = `flex-row items-center justify-center px-4 py-3 
+    rounded-2xl min-w-[160px] shadow-md bg-appButton`;
 
-  const getButtonStyle = () => {
-    switch (variant) {
-      case 'outline':
-        return styles.outlineButton;
-      default:
-        return styles.primaryButton;
-    }
-  };
+   const textBaseStyle = `text-appButtonText text-base font-semibold`;
 
-  const getTextStyle = () => {
-    switch (variant) {
-      case 'outline':
-        return styles.outlineText;
-      default:
-        return styles.primaryText;
-    }
-  };
+   const disabledStyle = disabled ? 'opacity-50 bg-appDisabled' : '';
 
-  return (
-    <TouchableOpacity
-      style={[
-        styles.baseButton,
-        getButtonStyle(),
-        disabled && styles.disabledButton,
-        style,
-      ]}
-      onPress={onPress}
-      disabled={disabled}
-      {...props}>
-      {leftIcon && <View style={styles.icon}>{leftIcon}</View>}
-      <Text style={[getTextStyle(), textStyle]}>{title}</Text>
-    </TouchableOpacity>
-  );
+   return (
+      <TouchableOpacity
+         className={`${baseStyle} ${disabledStyle} ${style}`}
+         onPress={onPress}
+         disabled={disabled}
+         {...props}>
+         {leftIcon && <View className="mr-2">{leftIcon}</View>}
+         <Text className={`${textBaseStyle} ${textStyle}`}>{title}</Text>
+      </TouchableOpacity>
+   );
 };
 
 export default ButtonComponent;

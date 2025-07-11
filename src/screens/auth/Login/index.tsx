@@ -10,7 +10,7 @@ import { AuthStackParamList, RootStackParamList } from '@navigation/NavigationTy
 import TextInputComponent from '@mycomponents/TextInput/text.input';
 import ButtonComponent from '@mycomponents/Button/Button';
 import { bosSchema, loginUserSchema } from '@utility/validations';
-import ActivityIndicatorComponent from '@screens/shared/activity.indicator';
+import LoadingComponent from '@mycomponents/Loading/laoading';
 import { useAuth } from '@hooks/use.auth';
 import { useNavigation } from '@react-navigation/native';
 import { useStyles } from '@hooks/Modular/use.styles';
@@ -47,7 +47,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
    };
 
    if (loading) {
-      return <ActivityIndicatorComponent />;
+      return <LoadingComponent />;
    }
    return (
       <SafeAreaView style={[styles.container]}>

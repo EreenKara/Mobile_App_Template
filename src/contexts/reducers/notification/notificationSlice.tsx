@@ -30,8 +30,11 @@ const notificationSlice = createSlice({
    initialState,
    reducers: {
       showNotification(state, action: PayloadAction<NotificationOptions>) {
-         state.queue.push(action.payload);
+         if (state.queue.length < 5) {
+            state.queue.push(action.payload);
+         }
 
+         // Eğer şu anda görünür bir notification yoksa, hemen göster
          if (!state.visible && !state.current) {
             state.current = state.queue.shift() || null;
             state.visible = !!state.current;
@@ -39,10 +42,12 @@ const notificationSlice = createSlice({
       },
       dismissNotification(state) {
          state.visible = false;
+         // Burada current'ı temizliyoruz
+         state.current = null;
       },
       nextNotification(state) {
          if (state.queue.length > 0) {
-            state.current = state.queue.shift()!;
+            state.current = state.queue.shift() || null;
             state.visible = true;
          } else {
             state.current = null;

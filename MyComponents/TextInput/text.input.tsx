@@ -1,107 +1,93 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TextInputProps,
-  ViewProps,
-  TextProps,
-  TouchableOpacity,
+   View,
+   Text,
+   TextInput,
+   TextInputProps,
+   TextProps,
+   TouchableOpacity,
+   ViewProps,
 } from 'react-native';
-import {useStyles} from '@hooks/Modular/use.styles';
-import createStyles from './text.input.style';
-import Colors from '@styles/common/colors';
-import styleNumbers from '@styles/common/style.numbers';
 
 interface TextInputComponentProps extends Omit<TextInputProps, 'style'> {
-  label?: string;
-  error?: string;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
-  onPress?: () => void;
-  style?: TextInputProps['style'];
-  viewStyle?: ViewProps['style'];
-  labelStyle?: TextProps['style'];
-  multiline?: boolean;
+   label?: string;
+   error?: string;
+   leftIcon?: React.ReactNode;
+   rightIcon?: React.ReactNode;
+   onPress?: () => void;
+   style?: string;
+   viewStyle?: string;
+   labelStyle?: string;
+   multiline?: boolean;
 }
 
 const TextInputComponent: React.FC<TextInputComponentProps> = ({
-  label = '',
-  error,
-  leftIcon,
-  rightIcon,
-  style,
-  viewStyle,
-  labelStyle,
-  onFocus,
-  onBlur,
-  onPress,
-  placeholderTextColor = Colors.getTheme().text + '80',
-  multiline = false,
-  ...restProps
+   label = '',
+   error,
+   leftIcon,
+   rightIcon,
+   style,
+   viewStyle,
+   labelStyle,
+   onFocus,
+   onBlur,
+   onPress,
+   placeholderTextColor,
+   multiline = false,
+   ...restProps
 }) => {
-  const styles = useStyles(createStyles);
-  const [isFocused, setIsFocused] = useState(false);
+   const [isFocused, setIsFocused] = useState(false);
 
-  return (
-    <View style={styles.container}>
-      {/* Label */}
-      {label && (
-        <View style={styles.labelContainer}>
-          <Text style={[styles.label, labelStyle]}>{label}</Text>
-        </View>
-      )}
+   return (
+      <View className="w-full">
+         {/* Label */}
+         {label && <Text className={`text-base font-semibold mb-1 ${labelStyle}`}>{label}</Text>}
 
-      {/* Input Container */}
-      <View
-        style={[
-          styles.inputContainer,
-          isFocused && styles.focusedInput,
-          error && styles.errorInput,
-          viewStyle,
-        ]}>
-        {leftIcon && (
-          <TouchableOpacity onPress={onPress}>
-            <View style={styles.icon}>{leftIcon}</View>
-          </TouchableOpacity>
-        )}
+         {/* Input Container */}
+         <View
+            className={`
+          flex-row items-center rounded-md px-3 py-2 bg-appBackground
+          ${isFocused ? 'border-2 border-appButton' : 'border border-appBorderColor'}
+          ${error ? 'border-appError' : ''}
+          ${viewStyle ? viewStyle : ''}
+        `}>
+            {leftIcon && (
+               <TouchableOpacity onPress={onPress}>
+                  <View className="p-4 px-8">{leftIcon}</View>
+               </TouchableOpacity>
+            )}
 
-        <TextInput
-          {...restProps}
-          style={[styles.input, style]}
-          onFocus={e => {
-            setIsFocused(true);
-            onFocus?.(e);
-          }}
-          onBlur={e => {
-            setIsFocused(false);
-            onBlur?.(e);
-          }}
-          placeholderTextColor={placeholderTextColor}
-          multiline={multiline}
-        />
+            <TextInput
+               {...restProps}
+               className={`flex-1 text-base text-appText ${style}`}
+               placeholderTextColor={placeholderTextColor}
+               multiline={multiline}
+               onFocus={e => {
+                  setIsFocused(true);
+                  onFocus?.(e);
+               }}
+               onBlur={e => {
+                  setIsFocused(false);
+                  onBlur?.(e);
+               }}
+            />
 
-        {rightIcon && (
-          <TouchableOpacity onPress={onPress}>
-            <View style={styles.icon}>{rightIcon}</View>
-          </TouchableOpacity>
-        )}
+            {rightIcon && (
+               <TouchableOpacity onPress={onPress}>
+                  <View className="ml-2">{rightIcon}</View>
+               </TouchableOpacity>
+            )}
+         </View>
+
+         {/* Error */}
+         {error && (
+            <View className="flex-row items-center mt-1">
+               <Text className="text-appError mr-1">❗</Text>
+               <Text className="text-appError text-sm">{error}</Text>
+            </View>
+         )}
       </View>
-
-      {/* Error Message */}
-      {error && (
-        <View style={styles.errorContainer}>
-          <Text
-            style={{
-              color: Colors.getTheme().error || 'red',
-            }}>
-            ❗
-          </Text>
-          <Text style={styles.error}>{error}</Text>
-        </View>
-      )}
-    </View>
-  );
+   );
 };
 
 export default TextInputComponent;

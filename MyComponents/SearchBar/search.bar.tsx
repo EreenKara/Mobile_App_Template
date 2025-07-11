@@ -1,87 +1,54 @@
-import {
-  Image,
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  View,
-  ViewStyle,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import Colors, {ColorsSchema} from '@styles/common/colors';
-import CommonStyles from '@styles/common/commonStyles';
-import styleNumbers from '@styles/common/style.numbers';
-import TextInputComponent from '@components/TextInput/text.input';
-import {useStyles} from '@hooks/Modular/use.styles';
-import {useDebounce} from '@hooks/Modular/use.debounce';
+import React, { useEffect, useState } from 'react';
+import { Image, Text, View, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import TextInputComponent from '@mycomponents/TextInput/text.input';
+import { useDebounce } from '@hooks/modular/use.debounce';
+
 interface SearchBarComponentProps {
-  modalTitle?: string;
-  placeholder?: string;
-  handleSearch?: (value: string) => void;
-  inputStyle?: StyleProp<ViewStyle>;
-  titleStyle?: StyleProp<TextStyle>;
-  debounceTime?: number;
-  debounce?: boolean;
+   modalTitle?: string;
+   placeholder?: string;
+   handleSearch?: (value: string) => void;
+   inputStyle?: string;
+   titleStyle?: string;
+   debounceTime?: number;
+   debounce?: boolean;
 }
+
 const SearchIcon = () => {
-  const styles = useStyles(createStyles);
-  return (
-    <Image
-      source={require('@assets/images/search-icon.png')}
-      style={styles.searchIcon}
-    />
-  );
+   return <Image source={require('@assets/images/search-icon.png')} className="w-5 h-5" />;
 };
 
 const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
-  placeholder = '',
-  modalTitle = '',
-  handleSearch,
-  inputStyle,
-  titleStyle,
-  debounceTime = 500,
-  debounce = false,
+   placeholder = '',
+   modalTitle = '',
+   handleSearch,
+   inputStyle,
+   titleStyle,
+   debounceTime = 500,
+   debounce = false,
 }) => {
-  const styles = useStyles(createStyles);
-  const [value, setValue] = useState('');
-  const debouncedValue = useDebounce(value, debounceTime);
-  useEffect(() => {
-    if (debounce) {
-      handleSearch?.(debouncedValue);
-    }
-  }, [debouncedValue]);
-  return (
-    <View style={styles.searchContainer}>
-      <Text style={[CommonStyles.textStyles.title, styles.text, titleStyle]}>
-        {modalTitle}
-      </Text>
-      <TextInputComponent
-        placeholder={placeholder}
-        viewStyle={[inputStyle]}
-        leftIcon={<SearchIcon />}
-        value={value}
-        onChangeText={setValue}
-      />
-    </View>
-  );
+   const [value, setValue] = useState('');
+   const debouncedValue = useDebounce(value, debounceTime);
+
+   useEffect(() => {
+      if (debounce) {
+         handleSearch?.(debouncedValue);
+      }
+   }, [debouncedValue]);
+
+   return (
+      <View className="w-full px-4">
+         <Text className={`text-xl font-semibold text-center mb-2 ${titleStyle}`}>
+            {modalTitle}
+         </Text>
+         <TextInputComponent
+            placeholder={placeholder}
+            viewStyle={`${inputStyle}`}
+            leftIcon={<SearchIcon />}
+            value={value}
+            onChangeText={setValue}
+         />
+      </View>
+   );
 };
 
 export default SearchBarComponent;
-
-const createStyles = (colors: ColorsSchema) =>
-  StyleSheet.create({
-    searchContainer: {
-      flexDirection: 'column',
-      width: '100%',
-      alignItems: 'center',
-      borderRadius: styleNumbers.borderRadius,
-      paddingHorizontal: styleNumbers.space * 2,
-    },
-    text: {
-      paddingRight: styleNumbers.space / 2,
-    },
-    searchIcon: {
-      width: 20,
-      height: 20,
-    },
-  });

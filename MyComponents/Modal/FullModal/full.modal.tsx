@@ -1,119 +1,75 @@
 import {
-  TouchableWithoutFeedback,
-  StyleSheet,
-  View,
-  Modal,
-  ViewStyle,
-  Dimensions,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  TouchableOpacity,
-  StatusBar,
-  Image,
+   View,
+   Modal,
+   SafeAreaView,
+   TouchableOpacity,
+   StatusBar,
+   Image,
+   Platform,
 } from 'react-native';
 import React from 'react';
-import styleNumbers from '@styles/common/style.numbers';
-import Colors, {ColorsSchema} from '@styles/common/colors';
-import CommonStyles from '@styles/common/commonStyles';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Text} from 'react-native-paper';
-import {useStyles} from '@hooks/Modular/use.styles';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Text } from 'react-native-paper';
+import colors from 'tailwindcss/colors';
+import customColors from '@styles/tailwind.colors';
 
 interface FullModalComponentProps {
-  isOpen: boolean;
-  onClose: () => void;
-  withInput?: boolean;
-  children: React.ReactNode;
-  style?: ViewStyle;
-  title?: string;
+   isOpen: boolean;
+   onClose: () => void;
+   withInput?: boolean;
+   children: React.ReactNode;
+   style?: string;
+   title?: string;
 }
-
 const FullModalComponent: React.FC<FullModalComponentProps> = ({
-  isOpen,
-  title,
-  children,
-  style,
-  onClose,
-  ...rest
+   isOpen,
+   title,
+   children,
+   style = '',
+   onClose,
+   ...rest
 }) => {
-  const styles = useStyles(createStyles);
-  const content = (
-    <SafeAreaView style={[styles.modal, style]}>
-      <View style={styles.navbar}>
-        <TouchableOpacity
-          style={[styles.closeButton, {marginRight: styleNumbers.space * 2}]}
-          onPress={onClose}>
-          <Image
-            source={require('@assets/images/X.png')}
-            style={styles.closeIcon}
-          />
-        </TouchableOpacity>
-        <View style={styles.titleContainer}>
-          <Text style={[CommonStyles.textStyles.title, styles.title]}>
-            {title}
-          </Text>
-        </View>
-        <View style={styles.closeButton}></View>
-      </View>
-      <KeyboardAwareScrollView
-        style={styles.modalContent}
-        keyboardShouldPersistTaps="always"
-        contentContainerStyle={{flex: 1}}>
-        {children}
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
-  );
+   return (
+      <Modal
+         visible={isOpen}
+         transparent
+         animationType="fade"
+         statusBarTranslucent
+         {...rest}
+         onRequestClose={onClose}>
+         <SafeAreaView className={`flex-1 bg-appCardBackground ${style}`}>
+            {/* Navbar */}
+            <View className="w-full bg-appCardText flex-row items-center justify-between pt-8 mb-4 px-2">
+               {/* Sol Close Button */}
+               <TouchableOpacity onPress={onClose} className="w-12 h-12 mx-2">
+                  <Image
+                     style={{ tintColor: customColors.appError }}
+                     className="w-12 h-12"
+                     source={require('@assets/images/X.png')}
+                  />
+               </TouchableOpacity>
 
-  return (
-    <Modal
-      visible={isOpen}
-      transparent={true}
-      animationType="fade"
-      statusBarTranslucent={true}
-      {...rest}
-      onRequestClose={onClose}>
-      {content}
-    </Modal>
-  );
+               {/* Başlık */}
+               <View className="flex-1">
+                  <Text className="text-center text-2xl font-appFont text-appCardBackground">
+                     {title}
+                  </Text>
+               </View>
+
+               {/* Sağ boşluk (simetrik boşluk için) */}
+               <View className="w-12 h-12 mx-2" />
+            </View>
+
+            {/* İçerik */}
+            <KeyboardAwareScrollView
+               className="flex-1 p-4"
+               keyboardShouldPersistTaps="always"
+               contentContainerStyle={{ flexGrow: 1 }}>
+               {children}
+            </KeyboardAwareScrollView>
+         </SafeAreaView>
+      </Modal>
+   );
 };
 
 export default FullModalComponent;
-const createStyles = (colors: ColorsSchema) =>
-  StyleSheet.create({
-    modal: {
-      flex: 1,
-      backgroundColor: colors.cardBackground,
-      marginTop: StatusBar.currentHeight,
-    },
-    modalContent: {
-      padding: styleNumbers.space * 2,
-    },
-    closeButton: {
-      position: 'relative',
-      width: 50,
-      height: 50,
-      marginHorizontal: styleNumbers.space,
-    },
-    closeIcon: {
-      width: 50,
-      height: 50,
-      tintColor: colors.errorButton,
-    },
-    navbar: {
-      width: '100%',
-      backgroundColor: colors.cardText,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginBottom: styleNumbers.space * 2,
-    },
-    title: {
-      textAlign: 'center',
-      color: colors.cardBackground,
-      fontSize: styleNumbers.textSize * 2,
-    },
-    titleContainer: {
-      flex: 1,
-    },
-  });

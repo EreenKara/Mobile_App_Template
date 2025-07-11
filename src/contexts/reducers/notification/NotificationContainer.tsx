@@ -1,42 +1,31 @@
-// src/components/NotificationContainer.tsx
+// src/components/NotificationContainer.tsx - Alternatif Yaklaşım
 import React, { useEffect } from 'react';
 import { Snackbar } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '@contexts/store';
 import { dismissNotification, nextNotification } from '../notification/notificationSlice';
-import { useThemeColors } from '@contexts/index';
+import customColors from '@styles/tailwind.colors';
 
 export const NotificationContainer = () => {
    const dispatch = useDispatch<AppDispatch>();
-   const { current, visible } = useSelector((state: RootState) => state.notification);
-   const { colors } = useThemeColors();
+   const { current, visible, queue } = useSelector((state: RootState) => state.notification);
 
+   const handleDismiss = () => {
+      dispatch(dismissNotification());
+   };
    useEffect(() => {
-      if (!visible) {
+      if (!current && queue.length > 0) {
          dispatch(nextNotification());
       }
-   }, [visible]);
-
-   const getBackgroundColor = () => {
-      switch (current?.type) {
-         case 'success':
-            return colors.button;
-         case 'info':
-            return colors.button;
-         case 'error':
-            return colors.error;
-         default:
-            return colors.transition;
-      }
-   };
+   }, [current, dispatch]);
 
    if (!current || (current.modalType && current.modalType !== 'snackbar') || !current.message)
-      return null;
+      return <></>;
 
    return (
       <Snackbar
          visible={visible}
-         onDismiss={() => dispatch(dismissNotification())}
+         onDismiss={handleDismiss}
          duration={current.duration ?? 3000}
          action={
             current.actionLabel
@@ -44,12 +33,12 @@ export const NotificationContainer = () => {
                     label: current.actionLabel,
                     onPress: () => {
                        current.onActionPress?.();
-                       dispatch(dismissNotification());
+                       handleDismiss();
                     },
                  }
                : undefined
          }
-         style={{ backgroundColor: getBackgroundColor() }}>
+         style={{ backgroundColor: customColors?.appButton }}>
          {current.message}
       </Snackbar>
    );
