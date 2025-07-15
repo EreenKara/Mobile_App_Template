@@ -10,7 +10,7 @@ interface LoadingComponentProps {
 
 const LoadingComponent: React.FC<LoadingComponentProps> = ({
    size = 'large',
-   color = customColors?.button || '#000', // fallback
+   color = customColors?.appButton || '#000', // fallback
    fullScreen = false,
 }) => {
    return (

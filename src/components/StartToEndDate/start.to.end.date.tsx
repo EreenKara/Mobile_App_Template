@@ -6,7 +6,7 @@ import { handleDateTimeChange } from '@components/StartToEndDate/handleDateTimeC
 import styleNumbers from '@styles/common/style.numbers';
 import { ColorsSchema } from '@styles/common/colors';
 import { useStyles } from '@hooks/Modular/use.styles';
-import { ExtendedAsset } from '@hooks/useCamera';
+import { ExtendedAsset } from '@hooks/common/useCamera';
 import { useNotification } from '@contexts/notification.context';
 
 interface StartToEndDateComponentProps {

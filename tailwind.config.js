@@ -6,35 +6,37 @@ module.exports = {
       './MyComponents/**/*.{js,jsx,ts,tsx}',
    ],
    presets: [require('nativewind/preset')],
+   darkMode: 'class', // Enable dark mode
    theme: {
       extend: {
          fontFamily: {
             appFont: ['Inter', 'sans-serif'],
          },
          colors: {
-            appButton: '#056161', // tiklanabilir ögeler ve focused olan ögelerin renkleri
-            appButtonText: '#fff',
-            appBackground: '#E0F7FA', // background renkleri
-            appCardButton: '#1E5F74', // kart buton renkleri ve arka plandan ayrılan ögelerin button renkleri
-            appCardBackground: '#334C64', // kart arka planları ve arka plandan ayrılan ögelerin renkleri
-            appTransition: '#CBF2F6', // background ile aynı olsun istemiyorsun ama ona yakın bir renk olsun istiyorsun.
-            appCardText: '#BFCCCE', // kart içerisindeki text renkleri
-            appText: '#000', // text renkleri
-            appDisabled: '#193333', // herhangi bir tıklanabilir öge disabled oldugunda renkleri
-            appTransparentColor: 'rgba(0,0,0,0.3)', // arka plan'ın blurlaşmasının rengi
-            appBar: '#CBF2F6',
-            appMapFill: '#C62F2F',
-            appMapStroke: '#011818',
-            appMapSelectedFill: '#E48679',
-            appMapSelectedStroke: 'white',
-            appCreditCard: '#D1E1F0',
-            appError: 'red', // hata renkleri
-            appErrorButton: '#891515', // hata renkleri
-            appWarning: '#D2C537',
-            appBorderColor: '#056161',
-            appIndicator: '#0a7ea4', // herhangi tutmaç, garip button gibi etkileşime girilebilen öğenin içerisindeki kısım. Switch'in kafası örneğin.
-            appIcon: '#345C6F',
-            appPlaceholder: '#999999',
+            // CSS Variables - Automatically switch based on theme
+            appButton: 'rgb(var(--color-app-button) / <alpha-value>)',
+            appButtonText: 'rgb(var(--color-app-button-text) / <alpha-value>)',
+            appBackground: 'rgb(var(--color-app-background) / <alpha-value>)',
+            appCardButton: 'rgb(var(--color-app-card-button) / <alpha-value>)',
+            appCardBackground: 'rgb(var(--color-app-card-background) / <alpha-value>)',
+            appTransition: 'rgb(var(--color-app-transition) / <alpha-value>)',
+            appCardText: 'rgb(var(--color-app-card-text) / <alpha-value>)',
+            appText: 'rgb(var(--color-app-text) / <alpha-value>)',
+            appDisabled: 'rgb(var(--color-app-disabled) / <alpha-value>)',
+            appTransparentColor: 'rgb(var(--color-app-transparent) / <alpha-value>)',
+            appBar: 'rgb(var(--color-app-bar) / <alpha-value>)',
+            appMapFill: 'rgb(var(--color-app-map-fill) / <alpha-value>)',
+            appMapStroke: 'rgb(var(--color-app-map-stroke) / <alpha-value>)',
+            appMapSelectedFill: 'rgb(var(--color-app-map-selected-fill) / <alpha-value>)',
+            appMapSelectedStroke: 'rgb(var(--color-app-map-selected-stroke) / <alpha-value>)',
+            appCreditCard: 'rgb(var(--color-app-credit-card) / <alpha-value>)',
+            appError: 'rgb(var(--color-app-error) / <alpha-value>)',
+            appErrorButton: 'rgb(var(--color-app-error-button) / <alpha-value>)',
+            appWarning: 'rgb(var(--color-app-warning) / <alpha-value>)',
+            appBorderColor: 'rgb(var(--color-app-border) / <alpha-value>)',
+            appIndicator: 'rgb(var(--color-app-indicator) / <alpha-value>)',
+            appIcon: 'rgb(var(--color-app-icon) / <alpha-value>)',
+            appPlaceholder: 'rgb(var(--color-app-placeholder) / <alpha-value>)',
          },
       },
    },

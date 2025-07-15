@@ -3,7 +3,7 @@ import { View, Text, Button, Image } from 'react-native';
 
 import ButtonComponent from '@mycomponents/Button/Button';
 import { useDispatch } from 'react-redux';
-import { showNotification } from '@contexts/reducers/notification/notificationSlice';
+import { showNotification } from '@contexts/slices/notification/notificationSlice';
 
 interface props {}
 const DenemeComp: React.FC<props> = () => {

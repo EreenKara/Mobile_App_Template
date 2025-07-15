@@ -9,12 +9,14 @@ export type AuthStackParamList = {
    Login: undefined;
    Register: undefined;
    ForgotPassword: undefined;
+   ResetPassword: { token: string };
    EmailConfirm: { emailOrIdentity: string };
+   Deneme: undefined;
 };
 
 export type AppTabParamList = {
    Home: undefined;
-   Profile: undefined;
+   //Profile: undefined;
 };
 
 export type HomeStackParamList = {
@@ -24,7 +26,20 @@ export type HomeStackParamList = {
 
 export type ProfileStackParamList = {
    ProfileMain: undefined;
+   PersonalInformation: undefined;
+   AddressInformation: undefined;
+   AddressChange: undefined;
+   Payment: undefined;
+   AddCard: undefined;
+   Groups: undefined;
+   CreateGroup: undefined;
+   Group: { groupId: string };
    Shared: NavigatorScreenParams<SharedStackParamList>;
+   // Settings Altındakiler
+   Settings: undefined;
+   Help: undefined;
+   About: undefined;
+   Security: undefined;
 };
 
 export type SharedStackParamList = {
