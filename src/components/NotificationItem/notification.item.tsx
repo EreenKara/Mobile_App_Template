@@ -1,117 +1,260 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useState} from 'react';
-import CommonStyles from '@styles/common/commonStyles';
-import styleNumbers from '@styles/common/style.numbers';
-import Colors, {ColorsSchema} from '@styles/common/colors';
-import {useStyles} from '@hooks/Modular/use.styles';
+import React, { useState } from 'react';
+import { Text, View, TouchableOpacity } from 'react-native';
+import {
+   Bell,
+   ChevronDown,
+   ChevronUp,
+   Clock,
+   User,
+   MessageCircle,
+   AlertCircle,
+   CheckCircle,
+   Info,
+   Star,
+   Heart,
+   Settings,
+   Mail,
+} from 'lucide-react-native';
+import { Notification } from '@apptypes/index';
 
 interface NotificationItemComponentProps {
-  image: string;
-  reasonTitle: string;
-  sender: string;
-  notificationCount: number;
-  time: Date;
+   notification: Notification;
+   onPress?: (notification: Notification) => void;
+   onExpand?: (notification: Notification) => void;
+   className?: string;
+   size?: 'small' | 'medium' | 'large';
+   showBell?: boolean;
+   showArrow?: boolean;
 }
 
-const NotificationItemComponent = ({
-  image,
-  reasonTitle,
-  sender,
-  notificationCount,
-  time,
-}: NotificationItemComponentProps) => {
-  const styles = useStyles(createStyles);
-  return (
-    <View style={styles.container}>
-      <Image
-        source={image ? {uri: image} : require('@assets/images/no-avatar.png')}
-        style={styles.image}
-      />
-      <View style={styles.detailsContainer}>
-        <Text style={[styles.title, styles.text]}>{reasonTitle}</Text>
-        <Image source={require('@assets/images/dot.png')} style={styles.dot} />
-        <Text style={[styles.source, styles.text]}>{sender}</Text>
-        <Image source={require('@assets/images/dot.png')} style={styles.dot} />
-        <Text style={[styles.count, styles.text]}>
-          {notificationCount} yeni bildirim
-        </Text>
-        <Image source={require('@assets/images/dot.png')} style={styles.dot} />
-        <Text style={[styles.time, styles.text]}>{time.toLocaleString()}</Text>
-        <Image
-          source={require('@assets/images/bell_notification.png')}
-          style={styles.smallLogo}
-        />
-      </View>
-      <Image
-        source={require('@assets/images/down-arrow.png')}
-        style={styles.downArrow}
-      />
-    </View>
-  );
+const NotificationItemComponent: React.FC<NotificationItemComponentProps> = ({
+   notification,
+   onPress,
+   onExpand,
+   className = '',
+   size = 'medium',
+   showBell = true,
+   showArrow = true,
+}) => {
+   const [isExpanded, setIsExpanded] = useState(false);
+
+   // Extract notification properties
+   const { message, sender, time, description, type = 'info', isRead = false } = notification;
+
+   // Check if expandable
+   const expandable = !!description;
+
+   // Size configurations
+   const sizeConfig = {
+      small: {
+         container: 'p-2 sm:p-3',
+         avatar: { width: 40, height: 40 },
+         spacing: 'ml-2 sm:ml-3',
+         title: 'text-sm sm:text-base',
+         meta: 'text-xs sm:text-sm',
+         iconSize: 16,
+         bellSize: 14,
+         arrowSize: 16,
+      },
+      medium: {
+         container: 'p-3 sm:p-4',
+         avatar: { width: 50, height: 50 },
+         spacing: 'ml-3 sm:ml-4',
+         title: 'text-base sm:text-lg',
+         meta: 'text-sm sm:text-base',
+         iconSize: 18,
+         bellSize: 16,
+         arrowSize: 20,
+      },
+      large: {
+         container: 'p-4 sm:p-5',
+         avatar: { width: 60, height: 60 },
+         spacing: 'ml-4 sm:ml-5',
+         title: 'text-lg sm:text-xl',
+         meta: 'text-base sm:text-lg',
+         iconSize: 20,
+         bellSize: 18,
+         arrowSize: 24,
+      },
+   };
+
+   // Notification type configurations
+   const typeConfig = {
+      info: { icon: Info, color: 'rgb(var(--color-app-indicator))' },
+      success: { icon: CheckCircle, color: 'rgb(var(--color-app-button))' },
+      warning: { icon: AlertCircle, color: 'rgb(var(--color-app-warning))' },
+      error: { icon: AlertCircle, color: 'rgb(var(--color-app-error))' },
+      message: { icon: MessageCircle, color: 'rgb(var(--color-app-card-button))' },
+      system: { icon: Settings, color: 'rgb(var(--color-app-icon))' },
+   };
+
+   const currentSize = sizeConfig[size];
+   const currentType = typeConfig[type];
+   const TypeIcon = currentType.icon;
+
+   // Format time - string'i Date'e çevir
+   const formatTime = (timeStr: string) => {
+      const date = new Date(timeStr);
+      const now = new Date();
+      const diff = now.getTime() - date.getTime();
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+
+      if (days > 0) return `${days}g önce`;
+      if (hours > 0) return `${hours}s önce`;
+      if (minutes > 0) return `${minutes}d önce`;
+      return 'Şimdi';
+   };
+
+   // Handle expand toggle
+   const handleExpand = () => {
+      setIsExpanded(!isExpanded);
+      onExpand?.(notification);
+   };
+
+   // Container styles
+   const containerStyles = `
+    flex-row items-start rounded-xl mb-3
+    ${currentSize.container}
+    ${isRead ? 'bg-appCardBackground' : 'bg-appCardBackground border-l-4'}
+    ${className}
+  `;
+
+   return (
+      <TouchableOpacity
+         className={containerStyles}
+         style={{
+            shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
+            elevation: 2,
+            borderWidth: 1,
+            borderColor: 'rgb(var(--color-app-border))',
+            borderLeftColor: isRead ? 'rgb(var(--color-app-border))' : currentType.color,
+         }}
+         onPress={() => onPress?.(notification)}
+         activeOpacity={0.7}>
+         {/* Content Section */}
+         <View className="flex-1">
+            {/* Main Message */}
+            <Text
+               className={`
+          text-appCardText font-appFont font-semibold
+          ${currentSize.title}
+          ${!isRead ? 'font-bold' : ''}
+        `}>
+               {message}
+            </Text>
+
+            {/* Sender and Time Row */}
+            <View className="flex-row items-center flex-wrap mt-1">
+               <View className="flex-row items-center">
+                  <User
+                     size={currentSize.iconSize - 2}
+                     color="rgb(var(--color-app-card-text) / 0.7)"
+                     strokeWidth={2}
+                  />
+                  <Text
+                     className={`
+              text-appCardText/70 font-appFont ml-1
+              ${currentSize.meta}
+            `}>
+                     {sender.name}
+                  </Text>
+               </View>
+
+               <View className="w-1 h-1 rounded-full bg-appCardText/50 mx-2" />
+
+               <View className="flex-row items-center">
+                  <Clock
+                     size={currentSize.iconSize - 2}
+                     color="rgb(var(--color-app-card-text) / 0.7)"
+                     strokeWidth={2}
+                  />
+                  <Text
+                     className={`
+              text-appCardText/70 font-appFont ml-1
+              ${currentSize.meta}
+            `}>
+                     {formatTime(time)}
+                  </Text>
+               </View>
+            </View>
+
+            {/* Expandable Description */}
+            {description && (expandable ? isExpanded : true) && (
+               <Text
+                  className={`
+            text-appCardText/60 font-appFont mt-2 leading-5
+            ${currentSize.meta}
+          `}>
+                  {description}
+               </Text>
+            )}
+
+            {/* Actions Row */}
+            <View className="flex-row items-center justify-between mt-2">
+               <View className="flex-row items-center">
+                  <View
+                     className="w-6 h-6 rounded-full items-center justify-center"
+                     style={{ backgroundColor: currentType.color }}>
+                     <TypeIcon size={12} color="white" strokeWidth={2} />
+                  </View>
+
+                  {showBell && (
+                     <Bell
+                        size={currentSize.bellSize}
+                        color="rgb(var(--color-app-card-text) / 0.7)"
+                        strokeWidth={2}
+                        className="ml-2"
+                     />
+                  )}
+
+                  {!isRead && <View className="w-2 h-2 rounded-full bg-appButton ml-2" />}
+               </View>
+
+               {/* Expand/Collapse Button */}
+               {expandable && description && (
+                  <TouchableOpacity
+                     onPress={handleExpand}
+                     className="flex-row items-center p-1"
+                     activeOpacity={0.7}>
+                     <Text
+                        className={`
+                text-appButton font-appFont font-medium mr-1
+                ${currentSize.meta}
+              `}>
+                        {isExpanded ? 'Daha Az' : 'Daha Fazla'}
+                     </Text>
+                     {isExpanded ? (
+                        <ChevronUp
+                           size={currentSize.arrowSize}
+                           color="rgb(var(--color-app-button))"
+                           strokeWidth={2}
+                        />
+                     ) : (
+                        <ChevronDown
+                           size={currentSize.arrowSize}
+                           color="rgb(var(--color-app-button))"
+                           strokeWidth={2}
+                        />
+                     )}
+                  </TouchableOpacity>
+               )}
+            </View>
+         </View>
+
+         {/* Right Arrow */}
+         {showArrow && !expandable && (
+            <View className="ml-2">
+               <ChevronDown
+                  size={currentSize.arrowSize}
+                  color="rgb(var(--color-app-card-text))"
+                  strokeWidth={2}
+               />
+            </View>
+         )}
+      </TouchableOpacity>
+   );
 };
 
 export default NotificationItemComponent;
-
-const createStyles = (colors: ColorsSchema) =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      padding: 10,
-      borderRadius: 8,
-      marginVertical: 5,
-      backgroundColor: colors.cardButton,
-      ...CommonStyles.shadowStyle,
-    },
-    image: {
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-    },
-    detailsContainer: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: styleNumbers.spaceLittle,
-      flex: 1,
-      marginLeft: 10,
-    },
-    text: {
-      color: colors.cardText,
-    },
-    title: {
-      fontWeight: 'bold',
-    },
-    description: {
-      color: '#666',
-    },
-    source: {
-      fontSize: 12,
-      color: '#999',
-    },
-    count: {
-      fontSize: 12,
-      color: '#999',
-    },
-    time: {
-      fontSize: 12,
-      color: '#999',
-    },
-    smallLogo: {
-      tintColor: colors.cardText,
-      width: 25,
-      height: 18,
-      marginLeft: 10,
-    },
-    downArrow: {
-      tintColor: colors.cardText,
-      width: 20,
-      height: 20,
-      marginLeft: 10,
-    },
-    dot: {
-      tintColor: colors.cardText,
-      width: 5,
-      height: 5,
-      marginTop: 8,
-    },
-  });

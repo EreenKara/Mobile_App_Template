@@ -1,11 +1,11 @@
 // src/features/auth/authSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import User from '@apptypes/entities/user';
+import { UserProfile } from '@apptypes/entities/userProfile';
 
 interface AuthState {
    accessToken: string | null;
    refreshToken: string | null;
-   user: User | null;
+   user: UserProfile | null;
    isAuthenticated: boolean;
 }
 
@@ -25,7 +25,7 @@ const authSlice = createSlice({
          action: PayloadAction<{
             accessToken: string;
             refreshToken: string;
-            user: User;
+            user: UserProfile;
          }>,
       ) {
          state.accessToken = action.payload.accessToken;

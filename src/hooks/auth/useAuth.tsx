@@ -5,11 +5,11 @@ import { RootState } from '@contexts/store';
 import { loginAction, logoutAction } from '@contexts/slices/auth/authSlice';
 import { useAsync, AsyncError } from '@hooks/modular/useAsync';
 import { apiClient } from '@services/backend/apiClient';
-import type User from '@apptypes/entities/user';
+import type { UserProfile } from '@apptypes/entities/userProfile';
 import { LoginCredentials } from '@apptypes/entities/loginCredentials';
 import { LoginResponse } from '@apptypes/api/loginResponse';
 import { LogoutResponse } from '@apptypes/api/logoutResponse';
-import { loginApi, logoutApi } from '@services/backend/userService';
+import { loginApi, logoutApi } from '@services/backend/authService';
 
 // Error types for specific handling
 export const AUTH_ERROR_CODES = {
@@ -20,7 +20,7 @@ export const AUTH_ERROR_CODES = {
 } as const;
 
 export interface UseAuthOptions {
-   onLoginSuccess?: (user: User) => void;
+   onLoginSuccess?: (user: UserProfile) => void;
    onLoginError?: (error: AsyncError) => void;
    onLogoutSuccess?: () => void;
    onLogoutError?: (error: AsyncError) => void;
@@ -31,7 +31,7 @@ export interface UseAuthReturn {
    loading: boolean;
    error: AsyncError | null;
    isAuthenticated: boolean;
-   user: User | null;
+   user: UserProfile | null;
 
    // Methods
    login: (credentials: LoginCredentials) => Promise<void>;

@@ -9,7 +9,7 @@ import { AuthStackParamList } from '@navigation/NavigationTypes';
 import TextInputComponent from '@mycomponents/TextInput/text.input';
 import ButtonComponent from '@mycomponents/Button/Button';
 import LoadingComponent from '@mycomponents/Loading/laoading';
-import { useRegister } from '@hooks/useRegister';
+import { useRegister } from '@hooks/auth/useRegister';
 import { RegisterCredentials } from '@apptypes/index';
 import { registerValidationSchema } from '@utility/validations';
 import customColors from '@styles/tailwind.colors';
@@ -48,6 +48,7 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
    // Initial values
    const initialValues: RegisterCredentials = {
       name: '',
+      surname: '',
       email: '',
       phoneNumber: '',
       password: '',
@@ -65,6 +66,7 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
          // Register credentials (passwordConfirmation çıkarılıyor)
          const credentials: RegisterCredentials = {
             name: values.name,
+            surname: values.surname,
             email: values.email,
             phoneNumber: values.phoneNumber,
             password: values.password,
@@ -141,11 +143,24 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                      {/* Name Input */}
                      <View className="mb-4">
                         <TextInputComponent
-                           label="Ad Soyad"
+                           label="Ad"
                            value={values.name}
                            onChangeText={handleChange('name')}
                            onBlur={handleBlur('name')}
                            error={touched.name && errors.name ? errors.name : undefined}
+                           variant="outlined"
+                           size="medium"
+                           editable={!loading}
+                        />
+                     </View>
+                     {/* Surname Input */}
+                     <View className="mb-4">
+                        <TextInputComponent
+                           label="Soyad"
+                           value={values.surname}
+                           onChangeText={handleChange('surname')}
+                           onBlur={handleBlur('surname')}
+                           error={touched.surname && errors.surname ? errors.surname : undefined}
                            variant="outlined"
                            size="medium"
                            editable={!loading}

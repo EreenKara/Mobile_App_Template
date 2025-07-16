@@ -5,7 +5,7 @@ import { useAsync, AsyncError } from '@hooks/modular/useAsync';
 import { apiClient } from '@services/backend/apiClient';
 import authService from '@services/backend/authService';
 // Types
-import type { User, RegisterResponse, RegisterCredentials } from '@apptypes/index';
+import type { UserProfile, RegisterResponse, RegisterCredentials } from '@apptypes/index';
 
 // Error types for specific handling
 export const REGISTER_ERROR_CODES = {

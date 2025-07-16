@@ -3,16 +3,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Platform } from 'react-native';
 import { ProfileStackParamList } from './NavigationTypes';
 import customColors from '@styles/tailwind.colors';
-import NavBarTitle from '@screens/shared/navbar_title';
+import NavBarTitle from '@screens/shared/navbarTitle';
 import ProfileScreen from '@screens/profile/Profile';
 import SettingsScreen from '@screens/profile/Settings';
 import PaymentScreen from '@screens/profile/Payment';
 import AddCardScreen from '@screens/profile/Payment/add.card';
 import PersonalInformationScreen from '@screens/profile/PersonalInformation';
-import GroupsScreen from '@screens/profile/Groups';
 import AddressInformationScreen from '@screens/profile/AddressInformation';
-import CreateGroupScreen from '@screens/profile/CreateGroup';
-import GroupScreen from '@screens/profile/Group';
 import SharedNavigator from './SharedNavigator';
 import AddressChangeScreen from '@screens/profile/AddressChange';
 
@@ -66,26 +63,6 @@ const screenConfig = {
          component: AddCardScreen,
          title: 'Kart Ekle',
          icon: 'plus',
-         presentation: 'modal' as const,
-      },
-   },
-
-   // Groups and social features
-   social: {
-      Groups: {
-         component: GroupsScreen,
-         title: 'Gruplarım',
-         icon: 'users',
-      },
-      Group: {
-         component: GroupScreen,
-         title: 'Grup Detayı',
-         icon: 'users',
-      },
-      CreateGroup: {
-         component: CreateGroupScreen,
-         title: 'Grup Oluştur',
-         icon: 'plus-circle',
          presentation: 'modal' as const,
       },
    },
@@ -237,23 +214,6 @@ const ProfileNavigator: React.FC = () => {
             name="AddCard"
             component={screenConfig.payment.AddCard.component}
             options={getScreenOptions('AddCard', screenConfig.payment.AddCard)}
-         />
-
-         {/* Social Features Screens */}
-         <Stack.Screen
-            name="Groups"
-            component={screenConfig.social.Groups.component}
-            options={getScreenOptions('Groups', screenConfig.social.Groups)}
-         />
-         <Stack.Screen
-            name="CreateGroup"
-            component={screenConfig.social.Group.component}
-            options={getScreenOptions('Group', screenConfig.social.Group)}
-         />
-         <Stack.Screen
-            name="Group"
-            component={screenConfig.social.CreateGroup.component}
-            options={getScreenOptions('CreateGroup', screenConfig.social.CreateGroup)}
          />
          <Stack.Screen
             name="Shared"

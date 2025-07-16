@@ -1,4 +1,4 @@
-import { User } from '../entities/user';
+import { User } from '../entities/userProfile';
 
 export interface EmailConfirmResponse {
    success: boolean;

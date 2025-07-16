@@ -1,4 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { UserAddress } from '@apptypes/index';
 
 export type RootStackParamList = {
    Auth: undefined;
@@ -16,7 +17,7 @@ export type AuthStackParamList = {
 
 export type AppTabParamList = {
    Home: undefined;
-   //Profile: undefined;
+   Profile: undefined;
 };
 
 export type HomeStackParamList = {
@@ -28,7 +29,10 @@ export type ProfileStackParamList = {
    ProfileMain: undefined;
    PersonalInformation: undefined;
    AddressInformation: undefined;
-   AddressChange: undefined;
+   AddressChange: {
+      mode?: 'create' | 'edit';
+      address?: UserAddress;
+   };
    Payment: undefined;
    AddCard: undefined;
    Groups: undefined;

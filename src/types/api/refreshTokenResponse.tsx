@@ -1,4 +1,4 @@
-import User from '@apptypes/entities/user';
+import User from '@apptypes/entities/userProfile';
 
 export interface RefreshTokenResponse {
    access_token: string;

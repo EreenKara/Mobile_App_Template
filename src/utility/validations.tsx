@@ -1,4 +1,5 @@
-import yup, { object, string, number, date, ref } from 'yup';
+import * as yup from 'yup';
+import { object, string, number, date, ref } from 'yup';
 
 const nameValidation = string().required();
 const surnameValidation = string().required();
@@ -76,6 +77,10 @@ const registerValidationSchema = yup.object().shape({
       .min(2, 'Ad en az 2 karakter olmalıdır')
       .max(50, 'Ad en fazla 50 karakter olabilir')
       .required('Ad gereklidir'),
+   surname: string()
+      .min(2, 'Ad en az 2 karakter olmalıdır')
+      .max(50, 'Ad en fazla 50 karakter olabilir')
+      .required(),
    email: yup.string().email('Geçerli bir email adresi girin').required('Email adresi gereklidir'),
    phoneNumber: yup
       .string()
@@ -117,10 +122,94 @@ const resetPasswordValidationSchema = yup.object().shape({
       .oneOf([yup.ref('newPassword')], 'Şifreler eşleşmiyor')
       .required('Şifre tekrarı gereklidir'),
 });
+
+const isValidLuhn = (cardNumber: string): boolean => {
+   let sum = 0;
+   let isEven = false;
+
+   for (let i = cardNumber.length - 1; i >= 0; i--) {
+      let digit = parseInt(cardNumber[i]);
+
+      if (isEven) {
+         digit *= 2;
+         if (digit > 9) {
+            digit -= 9;
+         }
+      }
+
+      sum += digit;
+      isEven = !isEven;
+   }
+
+   return sum % 10 === 0;
+};
+const cardValidationSchema = yup.object().shape({
+   cardHolder: yup
+      .string()
+      .required('Kart sahibinin adı gereklidir')
+      .min(2, 'Ad en az 2 karakter olmalıdır')
+      .max(50, 'Ad en fazla 50 karakter olabilir')
+      .matches(/^[a-zA-ZğĞıİöÖüÜşŞçÇ\s]+$/, 'Sadece harfler kullanılabilir'),
+
+   cardNumber: yup
+      .string()
+      .required('Kart numarası gereklidir')
+      .matches(/^\d{4}\s\d{4}\s\d{4}\s\d{4}$/, 'Geçerli bir kart numarası girin')
+      .test('luhn-check', 'Geçersiz kart numarası', value => {
+         if (!value) return false;
+         const numbers = value.replace(/\s/g, '');
+         return isValidLuhn(numbers);
+      }),
+
+   expiryDate: yup
+      .string()
+      .required('Son kullanma tarihi gereklidir')
+      .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, 'MM/YY formatında girin')
+      .test('expiry-check', 'Kart süresi dolmuş', value => {
+         if (!value) return false;
+         const [month, year] = value.split('/');
+         const currentDate = new Date();
+         const expiryDate = new Date(2000 + parseInt(year), parseInt(month) - 1);
+         return expiryDate > currentDate;
+      }),
+
+   cvc: yup
+      .string()
+      .required('CVC gereklidir')
+      .matches(/^\d{3,4}$/, 'CVC 3 veya 4 haneli olmalıdır'),
+
+   saveCard: yup.boolean(),
+});
+const addressValidationSchema = yup.object().shape({
+   type: yup
+      .string()
+      .oneOf(['home', 'work', 'other'], 'Geçerli bir adres tipi seçin')
+      .required('Adres tipi gereklidir'),
+   title: yup
+      .string()
+      .min(2, 'Adres başlığı en az 2 karakter olmalıdır')
+      .max(50, 'Adres başlığı en fazla 50 karakter olabilir')
+      .required('Adres başlığı gereklidir'),
+   cityId: yup.string().required('Şehir seçimi gereklidir'),
+   districtId: yup.string().required('İlçe seçimi gereklidir'),
+   fullAddress: yup
+      .string()
+      .min(10, 'Detaylı adres en az 10 karakter olmalıdır')
+      .max(200, 'Detaylı adres en fazla 200 karakter olabilir')
+      .required('Detaylı adres gereklidir'),
+   buildingNo: yup.string().max(10, 'Bina no en fazla 10 karakter olabilir'),
+   apartmentNo: yup.string().max(10, 'Daire no en fazla 10 karakter olabilir'),
+   floor: yup.string().max(5, 'Kat bilgisi en fazla 5 karakter olabilir'),
+   postalCode: yup.string().matches(/^\d{5}$/, 'Posta kodu 5 haneli olmalıdır'),
+   isDefault: yup.boolean(),
+});
+
 export {
    registerValidationSchema,
    loginUserSchema,
    resetPasswordValidationSchema,
    bosSchema,
    forgotPasswordValidationSchema,
+   cardValidationSchema,
+   addressValidationSchema,
 };

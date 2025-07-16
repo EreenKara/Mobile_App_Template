@@ -11,6 +11,7 @@ import RootNavigator from '@navigation/RootNavigator';
 import { store } from '@contexts/store'; // Import your Redux store
 import { initializeTheme, toggleDarkMode } from '@contexts/slices/settings/settingsSlice';
 import { colorScheme } from 'nativewind';
+import customColors from '@styles/tailwind.colors';
 const App = () => {
    // 🚀 App başlangıcında tema'yı initialize et
    useEffect(() => {
@@ -27,7 +28,9 @@ const App = () => {
    });
 
    if (!fontsLoaded) {
-      return <LoadingComponent />; // veya loading screen
+      return (
+         <LoadingComponent variant="spinner" size="lg" color={customColors?.appButton} fullScreen />
+      ); // veya loading screen
    }
 
    return (

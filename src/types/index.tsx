@@ -1,5 +1,5 @@
 // * Entities
-export * from './entities/user';
+export * from './entities/userProfile';
 export * from './entities/registerCredentials';
 export * from './entities/loginCredentials';
 export * from './entities/city';
@@ -8,6 +8,8 @@ export * from './entities/forgotPassword';
 export * from './entities/resetPassword';
 export * from './entities/emailConfirm';
 export * from './entities/resendCode';
+export * from './entities/notification';
+export * from './entities/userAddress';
 
 // * API
 export * from './api/emailConfirmResponse';

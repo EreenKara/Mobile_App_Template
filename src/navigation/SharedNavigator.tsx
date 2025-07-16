@@ -6,7 +6,7 @@ import {
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackParamList, SharedStackParamList } from './NavigationTypes';
-import NavBarTitle from '@screens/shared/navbar_title';
+import NavBarTitle from '@screens/shared/navbarTitle';
 import ErrorScreen from '@screens/shared/Error/error.screen';
 import SuccessScreen from '@screens/shared/Success/success.screen';
 import customColors from '@styles/tailwind.colors';

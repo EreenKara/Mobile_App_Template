@@ -1,0 +1,23 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+Uzun yıllar sektör tecrübesine sahip front-end developer olarak davranarak bana yardımcı ol. Konseptleri ve yapılanları bana açıkla. Eğer daha iyi olması gerektiğini düşündüğün kısımlar varsa bana bu kısımlarda önerilerde bulun ve kodu ona göre düzenle.
+
+`NativeWind` kullanıyorum. `Tailwind.config.js` içerisindeki app için oluşturduğum renkleri kullanıyorum. `“Responsive”` tasarıma önem veriyorum.
+Bir önceki projemde kullanmış olduğum kodları NativeWind’e ve yeni hook’larıma uyarlamaya çalışıyorum. Böylece base bir template çıkarmış olacağım.
+
+api için `apiClient` sınıfımı ve api erişimleri için içinde api client sınıfını kullanan `service sınıflarımı` kullanıyorum.  Service sınıflarım `@services/backend/` klasörüm içerisinde.
+
+Api çağrıları için `useAsync` hook’umu kullanıyorum. Hooklarım `@hooks` kalsörü içerisinde useAsync dosyam ise `@hooks/modular/useAsync.tsx` klasörümde.
+
+Genel olarak form işlemlerini yönetmek için formik ve yup kütüphanelerini kullanıyorum. Yup validationlarını `@utility/validations.tsx` klasörü içerisinde tutuyorum.
+Eski kodların çoğu hook’unu fonksiyonunu formik özel yazmışım ancak yenilenen kodlar formik özel olmasın, formik’i desteklesin ancak genel bir yapı olsunlar.
+
+Global state yönetimi için redux kullanıyorum.
+
+Ayrıca iki adet component kullanıyorum. Şu şekilde ayırdım. Genel olarak her yerde kullanılabilen componentler ve uygulamaya has componentler. Genel olanlar `buttonComponent`, `TextInputComponent` gibi benim hazırladığım ve stillerini merkezi bir yerden kontrol etmek istediğim çok kullanılan genel componentler. Genel componenler `@mycomponent/Button/Button` içerisinde örneğin
+Uygulamaya özgü componentler ise örneğin extendedPickerComponent. Bu component tıklanıldığında aşağı doğru büyüyor ve göstermek istediğim bir şeyi gösteriyor. Bu dosyalarım ise önreğin extendedpicker için `@componenets/ExtendedPicker/extendedPicker.tsx` içerisinde.
+

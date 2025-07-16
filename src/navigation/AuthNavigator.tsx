@@ -9,6 +9,7 @@ import { ForgotPasswordScreen } from '@screens/auth/index';
 import EmailConfirmScreen from '@screens/auth/EmailConfirm';
 import DenemeScreen from '@screens/auth/Deneme';
 import customColors, { defaultColors } from '@styles/tailwind.colors';
+import ResetPasswordScreen from '@screens/auth/ResetPassword';
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 const AuthNavigator: React.FC = () => {
@@ -107,6 +108,28 @@ const AuthNavigator: React.FC = () => {
             component={EmailConfirmScreen}
             options={{
                title: 'Email Doğrulama',
+               presentation: 'modal',
+               headerShown: true,
+               // Success/confirmation styling
+               headerStyle: {
+                  backgroundColor: customColors.appBackground, // appBackground
+               },
+               headerTintColor: customColors.appIcon, // appButton
+               headerTitleStyle: {
+                  ...getHeaderTitleStyle(),
+                  color: customColors.appButton, // appButton color for confirmation
+               },
+               // Prevent dismissal by swipe for important screens
+               gestureEnabled: false,
+               animation: 'slide_from_bottom',
+            }}
+         />
+         {/* Email Confirmation Screen - Modal */}
+         <Stack.Screen
+            name="ResetPassword"
+            component={ResetPasswordScreen}
+            options={{
+               title: 'Şifremi Sıfırla',
                presentation: 'modal',
                headerShown: true,
                // Success/confirmation styling

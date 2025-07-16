@@ -129,13 +129,13 @@ const AppNavigator: React.FC = () => {
          />
 
          {/* Profile Tab */}
-         {/*(<Tab.Screen
+         <Tab.Screen
             name="Profile"
             component={tabConfig.Profile.component}
             options={{
                tabBarBadge: undefined, // Add badge count if needed
             }}
-         />)*/}
+         />
       </Tab.Navigator>
    );
 };

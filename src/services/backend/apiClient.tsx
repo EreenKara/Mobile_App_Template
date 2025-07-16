@@ -7,7 +7,7 @@ import axios, {
    InternalAxiosRequestConfig,
 } from 'axios';
 import { getCache, setCache, clearCache } from '@hooks/modular/useCache';
-import { User } from '@apptypes/entities/user'; // Import your User type
+import { UserProfile } from '@apptypes/entities/userProfile'; // Import your User type
 import { store } from '@contexts/store'; // Import your Redux store
 import { loginAction } from '@contexts/slices/auth/authSlice';
 import { RefreshTokenResponse } from '@apptypes/api/refreshTokenResponse'; // Import your RefreshTokenResponse type
@@ -56,7 +56,7 @@ export interface ApiError {
 interface funcType {
    accessToken: string;
    refreshToken: string;
-   user: User;
+   user: UserProfile;
 }
 
 // Token Management
@@ -92,7 +92,7 @@ class AuthManager {
    async setLoginCreatiantialsToCache(
       accessToken: string,
       refreshToken: string,
-      userData: User,
+      userData: UserProfile,
    ): Promise<void> {
       await Promise.all([
          setCache(STORAGE_KEYS.ACCESS_TOKEN, accessToken),
@@ -369,7 +369,7 @@ class ApiClient {
    async setAuthCreadiantialsToCache(
       accessToken: string,
       refreshToken: string,
-      userData: User,
+      userData: UserProfile,
    ): Promise<void> {
       await this.authManager.setLoginCreatiantialsToCache(accessToken, refreshToken, userData);
    }

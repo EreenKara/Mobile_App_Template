@@ -6,7 +6,7 @@ import {
 import { Platform } from 'react-native';
 import { HomeStackParamList } from './NavigationTypes';
 import { HomeScreen } from '@screens/home/index';
-import NavBarTitle from '@screens/shared/navbar_title';
+import NavBarTitle from '@screens/shared/navbarTitle';
 import SharedNavigator from './SharedNavigator';
 import customColors from '@styles/tailwind.colors';
 
