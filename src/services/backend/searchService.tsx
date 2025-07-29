@@ -14,9 +14,7 @@ import {
    SearchResponse,
    SearchEndpoint,
    SearchServiceConfig,
-   SearchFilters,
-   SearchSortOptions,
-} from '../../types/search.types';
+} from '@apptypes/search.types';
 
 // ==================== SEARCH SERVICE CLASS ====================
 

@@ -10,7 +10,7 @@ import {
 interface ButtonProps extends TouchableOpacityProps {
    title: string;
    onPress: () => void;
-   variant?: 'primary' | 'secondary' | 'outlined' | 'text' | 'error';
+   variant?: 'primary' | 'secondary' | 'outline' | 'text' | 'error';
    size?: 'small' | 'medium' | 'large';
    className?: string;
    textClassName?: string;
@@ -36,9 +36,9 @@ const ButtonComponent: React.FC<ButtonProps> = ({
    ...props
 }) => {
    // Base responsive styles
-   const baseStyle = `flex-row items-center justify-center rounded-2xl shadow-md ${
-      fullWidth ? 'w-full' : 'min-w-[160px] sm:min-w-[180px] md:min-w-[200px]'
-   }`;
+   const baseStyle = `flex-row items-center justify-center rounded-2xl ${
+      variant !== 'outline' && variant !== 'text' ? 'shadow-md' : ''
+   } ${fullWidth ? 'w-full' : 'min-w-[160px] sm:min-w-[180px] md:min-w-[200px]'}`;
 
    // Size variants - responsive
    const sizeStyles = {
@@ -51,8 +51,8 @@ const ButtonComponent: React.FC<ButtonProps> = ({
    const variantStyles = {
       primary: 'bg-appButton active:bg-appButton/90',
       secondary: 'bg-appCardButton active:bg-appCardButton/90',
-      outline: 'bg-transparent border-2 border-appButton active:bg-appButton/10',
-      text: 'bg-transparent active:bg-appButton/10',
+      outline: 'bg-appBackground border-2 border-appButton active:bg-appButton/10',
+      text: 'active:bg-appButton/10',
       error: 'bg-appErrorButton active:bg-appErrorButton/90',
    };
 
@@ -93,7 +93,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
             <View className="mr-2 sm:mr-3">
                <ActivityIndicator
                   size="small"
-                  color={variant === 'outlined' || variant === 'text' ? '#056161' : '#fff'}
+                  color={variant === 'outline' || variant === 'text' ? '#056161' : '#fff'}
                />
             </View>
          )}

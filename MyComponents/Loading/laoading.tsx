@@ -7,8 +7,7 @@ import {
    Dimensions,
 } from 'react-native';
 import { Loader2, RotateCw } from 'lucide-react-native';
-import customColors from '@styles/tailwind.colors';
-
+import IconComponent from '@mycomponents/LucidImage';
 // ==================== TYPES & INTERFACES ====================
 
 export interface LoadingComponentProps {
@@ -61,7 +60,7 @@ const ANIMATION_SPEEDS = {
 const LoadingComponent: React.FC<LoadingComponentProps> = ({
    size = 'md',
    variant = 'spinner',
-   color = customColors?.appButton || '#3B82F6',
+   color = '#056161',
    fullScreen = false,
    message,
    blurBackground = false,
@@ -206,7 +205,13 @@ const LoadingComponent: React.FC<LoadingComponentProps> = ({
                },
             ],
          }}>
-         <Loader2 size={SIZES[size].indicator} color={color} strokeWidth={2.5} />
+         <IconComponent
+            Icon={Loader2}
+            size={SIZES[size].indicator}
+            color={color}
+            strokeWidth={2.5}
+            stroke={color}
+         />
       </Animated.View>
    );
 

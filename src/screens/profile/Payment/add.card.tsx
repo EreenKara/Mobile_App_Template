@@ -33,6 +33,7 @@ import TextInputComponent from '@mycomponents/TextInput/text.input';
 import ButtonComponent from '@mycomponents/Button/Button';
 import LoadingComponent from '@mycomponents/Loading/laoading';
 import { useAsync } from '@hooks/modular/useAsync';
+import IconComponent from '@mycomponents/LucidImage';
 
 // Types
 type Props = NativeStackScreenProps<ProfileStackParamList, 'AddCard'>;
@@ -149,7 +150,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
             onPress={() => navigation.goBack()}
             className="w-10 h-10 items-center justify-center mr-4"
             activeOpacity={0.7}>
-            <ArrowLeft size={24} color="rgb(var(--color-app-text))" />
+            <IconComponent Icon={ArrowLeft} size={24} className="text-appText" />
          </TouchableOpacity>
 
          <View className="flex-1">
@@ -161,7 +162,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
             onPress={handleScanCard}
             className="w-10 h-10 bg-appButton/10 rounded-full items-center justify-center"
             activeOpacity={0.7}>
-            <Scan size={20} color="rgb(var(--color-app-button))" />
+            <IconComponent Icon={Scan} size={20} className="text-appButton" />
          </TouchableOpacity>
       </View>
    );
@@ -183,7 +184,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
                          : 'KART'}
                </Text>
                <View className="flex-row items-center">
-                  <Shield size={16} color="rgb(var(--color-app-button-text))" />
+                  <IconComponent Icon={Shield} size={16} className="text-appButtonText" />
                   <Text className="text-appButtonText text-xs ml-1">Güvenli</Text>
                </View>
             </View>
@@ -225,7 +226,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
                onBlur={formik.handleBlur('cardHolder')}
                error={formik.touched.cardHolder ? formik.errors.cardHolder : undefined}
                placeholder="Ad Soyad"
-               leftIcon={<User size={20} color="rgb(var(--color-app-icon))" />}
+               leftIcon={<IconComponent Icon={User} size={20} className="text-appIcon" />}
                className="mb-2"
                autoCapitalize="words"
             />
@@ -240,10 +241,10 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
                onBlur={formik.handleBlur('cardNumber')}
                error={formik.touched.cardNumber ? formik.errors.cardNumber : undefined}
                placeholder="1234 5678 9012 3456"
-               leftIcon={<CreditCard size={20} color="rgb(var(--color-app-icon))" />}
+               leftIcon={<IconComponent Icon={CreditCard} size={20} className="text-appIcon" />}
                rightIcon={
                   cardType !== 'unknown' && (
-                     <CheckCircle size={20} color="rgb(var(--color-app-success))" />
+                     <IconComponent Icon={CheckCircle} size={20} className="text-appSuccess" />
                   )
                }
                keyboardType="numeric"
@@ -262,7 +263,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
                   onBlur={formik.handleBlur('expiryDate')}
                   error={formik.touched.expiryDate ? formik.errors.expiryDate : undefined}
                   placeholder="MM/YY"
-                  leftIcon={<Calendar size={20} color="rgb(var(--color-app-icon))" />}
+                  leftIcon={<IconComponent Icon={Calendar} size={20} className="text-appIcon" />}
                   keyboardType="numeric"
                   maxLength={5}
                   className="mb-2"
@@ -277,7 +278,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
                   onBlur={formik.handleBlur('cvc')}
                   error={formik.touched.cvc ? formik.errors.cvc : undefined}
                   placeholder="123"
-                  leftIcon={<Shield size={20} color="rgb(var(--color-app-icon))" />}
+                  leftIcon={<IconComponent Icon={Shield} size={20} className="text-appIcon" />}
                   keyboardType="numeric"
                   maxLength={4}
                   secureTextEntry
@@ -296,7 +297,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
                   formik.values.saveCard ? 'bg-appButton border-appButton' : 'border-appBorderColor'
                }`}>
                {formik.values.saveCard && (
-                  <CheckCircle size={16} color="rgb(var(--color-app-button-text))" />
+                  <IconComponent Icon={CheckCircle} size={16} className="text-appButtonText" />
                )}
             </View>
             <View className="flex-1">
@@ -309,7 +310,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
 
          {/* Security Notice */}
          <View className="flex-row items-center p-4 bg-appSuccess/10 rounded-lg mb-6">
-            <Shield size={20} color="rgb(var(--color-app-success))" />
+            <IconComponent Icon={Shield} size={20} className="text-appSuccess" />
             <Text className="text-appSuccess text-sm ml-2 flex-1">
                Kart bilgileriniz 256-bit SSL şifreleme ile korunmaktadır.
             </Text>

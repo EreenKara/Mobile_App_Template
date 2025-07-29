@@ -4,7 +4,8 @@ import { Bell, BellRing, X, Filter, MoreVertical } from 'lucide-react-native';
 import { Notification } from '@apptypes/index';
 import CenteredModalComponent from '@mycomponents/Modal/CenteredModal/centered.modal';
 import NotificationItemComponent from '@components/NotificationItem/notification.item';
-
+import IconComponent from '@mycomponents/LucidImage';
+import { useTailwindColors } from '@styles/tailwind.colors';
 interface NotificationBellComponentProps {
    notifications: Notification[];
    size?: 'small' | 'medium' | 'large';
@@ -57,15 +58,15 @@ const NotificationBellComponent: React.FC<NotificationBellComponentProps> = ({
    const variantConfig = {
       default: {
          container: 'bg-appTransition rounded-lg',
-         bell: 'rgb(var(--color-app-icon))',
+         bell: 'text-appIcon',
       },
       header: {
          container: 'bg-transparent',
-         bell: 'rgb(var(--color-app-icon))',
+         bell: 'text-appIcon',
       },
       floating: {
          container: 'bg-appButton rounded-full shadow-lg',
-         bell: 'rgb(var(--color-app-button-text))',
+         bell: 'text-appButtonText',
       },
    };
 
@@ -95,7 +96,7 @@ const NotificationBellComponent: React.FC<NotificationBellComponentProps> = ({
    const ModalHeader = () => (
       <View className="flex-row items-center justify-between p-4 border-b border-appBorderColor/20">
          <View className="flex-row items-center">
-            <Bell size={20} color="rgb(var(--color-app-text))" strokeWidth={2} />
+            <IconComponent Icon={Bell} size={20} className="text-appText" />
             <Text className="text-appText font-appFont font-semibold text-lg ml-2">
                Bildirimler
             </Text>
@@ -103,7 +104,7 @@ const NotificationBellComponent: React.FC<NotificationBellComponentProps> = ({
          </View>
 
          <TouchableOpacity onPress={() => setIsOpen(false)} className="p-2">
-            <X size={20} color="rgb(var(--color-app-icon))" strokeWidth={2} />
+            <IconComponent Icon={X} size={20} className="text-appIcon" />
          </TouchableOpacity>
       </View>
    );
@@ -149,7 +150,7 @@ const NotificationBellComponent: React.FC<NotificationBellComponentProps> = ({
             )}
 
             <TouchableOpacity className="p-2">
-               <MoreVertical size={16} color="rgb(var(--color-app-icon))" strokeWidth={2} />
+               <IconComponent Icon={MoreVertical} size={16} className="text-appIcon" />
             </TouchableOpacity>
          </View>
       </View>
@@ -158,7 +159,7 @@ const NotificationBellComponent: React.FC<NotificationBellComponentProps> = ({
    // Empty state component
    const EmptyState = () => (
       <View className="items-center justify-center py-12">
-         <Bell size={48} color="rgb(var(--color-app-placeholder))" strokeWidth={1} />
+         <IconComponent Icon={Bell} size={48} className="text-appPlaceholder" />
          <Text className="text-appPlaceholder font-appFont text-lg mt-4">
             {filter === 'unread' ? 'Okunmamış bildirim yok' : 'Henüz bildirim yok'}
          </Text>
@@ -180,15 +181,8 @@ const NotificationBellComponent: React.FC<NotificationBellComponentProps> = ({
                ${currentSize.container}
                ${currentVariant.container}
                ${className}
+               ${variant === 'floating' ? 'shadow-md' : ''}
             `}
-            style={
-               variant === 'floating'
-                  ? {
-                       shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                       elevation: 4,
-                    }
-                  : undefined
-            }
             activeOpacity={0.7}>
             {/* Bell Icon */}
             {showAnimation && unreadCount > 0 ? (

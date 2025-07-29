@@ -1,11 +1,11 @@
 // src/store/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import settingsReducer from './slices/settings/settingsSlice';
+import { persistStore, persistReducer } from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import authReducer from './slices/auth/authSlice';
 import notificationReducer from './slices/notification/notificationSlice';
 import locationReducer from './slices/locationSlice/locationSlice'; // locationReducer'ı import edin
-import { persistStore, persistReducer } from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 // Redux Persist configuration
 const persistConfig = {
    key: 'root',

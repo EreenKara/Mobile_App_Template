@@ -16,6 +16,7 @@ import {
    Mail,
 } from 'lucide-react-native';
 import { Notification } from '@apptypes/index';
+import IconComponent from '@mycomponents/LucidImage';
 
 interface NotificationItemComponentProps {
    notification: Notification;
@@ -80,12 +81,12 @@ const NotificationItemComponent: React.FC<NotificationItemComponentProps> = ({
 
    // Notification type configurations
    const typeConfig = {
-      info: { icon: Info, color: 'rgb(var(--color-app-indicator))' },
-      success: { icon: CheckCircle, color: 'rgb(var(--color-app-button))' },
-      warning: { icon: AlertCircle, color: 'rgb(var(--color-app-warning))' },
-      error: { icon: AlertCircle, color: 'rgb(var(--color-app-error))' },
-      message: { icon: MessageCircle, color: 'rgb(var(--color-app-card-button))' },
-      system: { icon: Settings, color: 'rgb(var(--color-app-icon))' },
+      info: { icon: Info, color: 'text-appIndicator' },
+      success: { icon: CheckCircle, color: 'text-appButton' },
+      warning: { icon: AlertCircle, color: 'text-appWarning' },
+      error: { icon: AlertCircle, color: 'text-appError' },
+      message: { icon: MessageCircle, color: 'text-appCardButton' },
+      system: { icon: Settings, color: 'text-appIcon' },
    };
 
    const currentSize = sizeConfig[size];
@@ -123,14 +124,7 @@ const NotificationItemComponent: React.FC<NotificationItemComponentProps> = ({
 
    return (
       <TouchableOpacity
-         className={containerStyles}
-         style={{
-            shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-            elevation: 2,
-            borderWidth: 1,
-            borderColor: 'rgb(var(--color-app-border))',
-            borderLeftColor: isRead ? 'rgb(var(--color-app-border))' : currentType.color,
-         }}
+         className={`${containerStyles} ${isRead ? 'bg-appCardBackground' : 'bg-appCardBackground border-l-4'}`}
          onPress={() => onPress?.(notification)}
          activeOpacity={0.7}>
          {/* Content Section */}
@@ -148,10 +142,10 @@ const NotificationItemComponent: React.FC<NotificationItemComponentProps> = ({
             {/* Sender and Time Row */}
             <View className="flex-row items-center flex-wrap mt-1">
                <View className="flex-row items-center">
-                  <User
+                  <IconComponent
+                     Icon={User}
                      size={currentSize.iconSize - 2}
-                     color="rgb(var(--color-app-card-text) / 0.7)"
-                     strokeWidth={2}
+                     className="text-appCardText/70"
                   />
                   <Text
                      className={`
@@ -165,10 +159,10 @@ const NotificationItemComponent: React.FC<NotificationItemComponentProps> = ({
                <View className="w-1 h-1 rounded-full bg-appCardText/50 mx-2" />
 
                <View className="flex-row items-center">
-                  <Clock
+                  <IconComponent
+                     Icon={Clock}
                      size={currentSize.iconSize - 2}
-                     color="rgb(var(--color-app-card-text) / 0.7)"
-                     strokeWidth={2}
+                     className="text-appCardText/70"
                   />
                   <Text
                      className={`
@@ -201,11 +195,10 @@ const NotificationItemComponent: React.FC<NotificationItemComponentProps> = ({
                   </View>
 
                   {showBell && (
-                     <Bell
+                     <IconComponent
+                        Icon={Bell}
                         size={currentSize.bellSize}
-                        color="rgb(var(--color-app-card-text) / 0.7)"
-                        strokeWidth={2}
-                        className="ml-2"
+                        className="text-appCardText/70 ml-2"
                      />
                   )}
 
@@ -226,16 +219,16 @@ const NotificationItemComponent: React.FC<NotificationItemComponentProps> = ({
                         {isExpanded ? 'Daha Az' : 'Daha Fazla'}
                      </Text>
                      {isExpanded ? (
-                        <ChevronUp
+                        <IconComponent
+                           Icon={ChevronUp}
                            size={currentSize.arrowSize}
-                           color="rgb(var(--color-app-button))"
-                           strokeWidth={2}
+                           className="text-appButton"
                         />
                      ) : (
-                        <ChevronDown
+                        <IconComponent
+                           Icon={ChevronDown}
                            size={currentSize.arrowSize}
-                           color="rgb(var(--color-app-button))"
-                           strokeWidth={2}
+                           className="text-appButton"
                         />
                      )}
                   </TouchableOpacity>
@@ -246,10 +239,10 @@ const NotificationItemComponent: React.FC<NotificationItemComponentProps> = ({
          {/* Right Arrow */}
          {showArrow && !expandable && (
             <View className="ml-2">
-               <ChevronDown
+               <IconComponent
+                  Icon={ChevronDown}
                   size={currentSize.arrowSize}
-                  color="rgb(var(--color-app-card-text))"
-                  strokeWidth={2}
+                  className="text-appCardText"
                />
             </View>
          )}

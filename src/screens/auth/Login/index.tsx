@@ -207,6 +207,16 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                         disabled={loading}
                      />
                   </View>
+                  <View className="mt-2 sm:mt-3">
+                     <ButtonComponent
+                        title="Ana Sayfaya Git"
+                        onPress={() => homeNavigation.navigate('App')}
+                        variant="text"
+                        size="medium"
+                        fullWidth
+                        disabled={loading}
+                     />
+                  </View>
                </View>
             )}
          </Formik>

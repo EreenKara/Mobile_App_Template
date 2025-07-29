@@ -13,6 +13,7 @@ import {
    Info,
 } from 'lucide-react-native';
 import { showNotification } from '@contexts/slices/notification/notificationSlice';
+import IconComponent from '@mycomponents/LucidImage';
 
 export interface DateRangeValues {
    startDate: Date;
@@ -530,18 +531,18 @@ const StartToEndDateComponent: React.FC<StartToEndDateComponentProps> = ({
 
       if (validationError) {
          return (
-            <AlertCircle
+            <IconComponent
+               Icon={AlertCircle}
                size={currentSize.iconSize}
-               color="rgb(var(--color-app-error))"
-               strokeWidth={2}
+               className="text-appError"
             />
          );
       } else if (isValid && values.startDate && values.endDate) {
          return (
-            <CheckCircle
+            <IconComponent
+               Icon={CheckCircle}
                size={currentSize.iconSize}
-               color="rgb(var(--color-app-button))"
-               strokeWidth={2}
+               className="text-appButton"
             />
          );
       }
@@ -556,7 +557,7 @@ const StartToEndDateComponent: React.FC<StartToEndDateComponentProps> = ({
       value: string,
       onPress: () => void,
    ) => {
-      const IconComponent =
+      const Icon =
          type === 'date'
             ? dateType === 'start'
                ? Calendar
@@ -579,14 +580,9 @@ const StartToEndDateComponent: React.FC<StartToEndDateComponentProps> = ({
             activeOpacity={0.7}>
             {showIcons && (
                <IconComponent
+                  Icon={Icon}
                   size={currentSize.iconSize}
-                  color={
-                     buttonStyle === 'filled'
-                        ? 'rgb(var(--color-app-button-text))'
-                        : 'rgb(var(--color-app-icon))'
-                  }
-                  strokeWidth={2}
-                  className="mr-2"
+                  className={buttonStyle === 'filled' ? 'text-appButtonText' : 'text-appIcon'}
                />
             )}
             <Text
@@ -642,15 +638,8 @@ const StartToEndDateComponent: React.FC<StartToEndDateComponentProps> = ({
         ${layoutConfig[layout]}
         ${disabled ? 'opacity-50' : ''}
         ${className}
-      `}
-         style={
-            variant === 'card'
-               ? {
-                    shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                    elevation: 2,
-                 }
-               : undefined
-         }>
+        ${variant === 'card' ? 'shadow-md' : ''}
+      `}>
          {/* Start Date Row */}
          {renderDateRow(
             'start',
@@ -680,11 +669,10 @@ const StartToEndDateComponent: React.FC<StartToEndDateComponentProps> = ({
             flex-row items-center justify-center
             mt-2
           `}>
-               <Info
+               <IconComponent
+                  Icon={Info}
                   size={currentSize.iconSize}
-                  color="rgb(var(--color-app-icon))"
-                  strokeWidth={2}
-                  className="mr-2"
+                  className="text-appIcon mr-2"
                />
                <Text
                   className={`

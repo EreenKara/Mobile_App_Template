@@ -22,6 +22,7 @@ import ButtonComponent from '@mycomponents/Button/Button';
 import LoadingComponent from '@mycomponents/Loading/laoading';
 import AddressPickerComponent from '@components/AddressPicker/address.picker';
 import { useUserAddress, CreateAddressData, UserAddress } from '@hooks/profile/useUserAddress';
+import IconComponent from '@mycomponents/LucidImage';
 
 // ==================== TYPES ====================
 
@@ -147,12 +148,12 @@ const AddressChangeScreen: React.FC<Props> = ({ navigation, route }) => {
             onPress={handleCancel}
             className="flex-row items-center py-2 px-3 rounded-lg bg-appSecondary/10"
             activeOpacity={0.7}>
-            <X size={20} color="rgb(var(--color-app-text))" />
+            <IconComponent Icon={X} size={20} className="text-appText" />
             <Text className="text-appText font-medium ml-2">İptal</Text>
          </TouchableOpacity>
 
          <View className="flex-row items-center">
-            <Home size={24} color="rgb(var(--color-app-button))" />
+            <IconComponent Icon={Home} size={24} className="text-appButton" />
             <Text className="text-appText font-bold text-lg ml-2">
                {isEditMode ? 'Adres Düzenle' : 'Yeni Adres'}
             </Text>
@@ -186,13 +187,10 @@ const AddressChangeScreen: React.FC<Props> = ({ navigation, route }) => {
                         : 'bg-appSecondary/5 border-appBorder'
                   }`}
                   activeOpacity={0.7}>
-                  <Icon
+                  <IconComponent
+                     Icon={Icon}
                      size={20}
-                     color={
-                        currentValue === key
-                           ? 'rgb(var(--color-app-button))'
-                           : 'rgb(var(--color-app-secondary))'
-                     }
+                     className={currentValue === key ? 'text-appButton' : 'text-appSecondary'}
                   />
                   <Text
                      className={`font-medium ml-2 ${
@@ -223,7 +221,7 @@ const AddressChangeScreen: React.FC<Props> = ({ navigation, route }) => {
             onChangeText={text => setFieldValue('title', text)}
             placeholder="Örn: Ev Adresim, İş Yerim"
             error={touched.title && errors.title}
-            leftIcon={<Home size={20} color="rgb(var(--color-app-secondary))" />}
+            leftIcon={<IconComponent Icon={Home} size={20} className="text-appSecondary" />}
             className="mb-2"
          />
 
@@ -247,7 +245,7 @@ const AddressChangeScreen: React.FC<Props> = ({ navigation, route }) => {
             error={touched.fullAddress && errors.fullAddress}
             multiline={true}
             numberOfLines={3}
-            leftIcon={<MapPin size={20} color="rgb(var(--color-app-secondary))" />}
+            leftIcon={<IconComponent Icon={MapPin} size={20} className="text-appSecondary" />}
             className="mb-2"
          />
 
@@ -301,13 +299,10 @@ const AddressChangeScreen: React.FC<Props> = ({ navigation, route }) => {
                   : 'bg-appSecondary/5 border-appBorder'
             }`}
             activeOpacity={0.7}>
-            <CheckCircle
+            <IconComponent
+               Icon={CheckCircle}
                size={24}
-               color={
-                  values.isDefault
-                     ? 'rgb(var(--color-app-button))'
-                     : 'rgb(var(--color-app-secondary))'
-               }
+               className={values.isDefault ? 'text-appButton' : 'text-appSecondary'}
             />
             <View className="ml-3 flex-1">
                <Text

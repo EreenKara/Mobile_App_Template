@@ -10,7 +10,8 @@ import {
    UIManager,
 } from 'react-native';
 import { ChevronDown, ChevronUp, MoreHorizontal } from 'lucide-react-native';
-
+import IconComponent from '@mycomponents/LucidImage';
+import { useTailwindColors } from '@styles/tailwind.colors';
 // Android için LayoutAnimation'ı aktif et
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
    UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -79,7 +80,7 @@ const ExtendedPickerComponent = forwardRef<ExtendedPickerRef, ExtendedPickerComp
       const [isOpen, setIsOpen] = useState(initialOpen);
       const scaleAnim = useRef(new Animated.Value(initialOpen ? 1 : 0)).current;
       const fadeAnim = useRef(new Animated.Value(initialOpen ? 1 : 0)).current;
-
+      const colors = useTailwindColors();
       // Size configurations
       const sizeConfig = {
          small: {
@@ -237,10 +238,10 @@ const ExtendedPickerComponent = forwardRef<ExtendedPickerRef, ExtendedPickerComp
       const renderDefaultIcon = () => {
          if (icon) return icon;
          return (
-            <MoreHorizontal
+            <IconComponent
+               Icon={MoreHorizontal}
+               className="text-appIcon"
                size={currentSize.iconSize}
-               color="rgb(var(--color-app-icon))"
-               strokeWidth={2}
             />
          );
       };
@@ -249,10 +250,10 @@ const ExtendedPickerComponent = forwardRef<ExtendedPickerRef, ExtendedPickerComp
       const renderChevron = () => {
          const ChevronIcon = isOpen ? ChevronUp : ChevronDown;
          return (
-            <ChevronIcon
+            <IconComponent
+               Icon={ChevronIcon}
+               className={isOpen ? 'text-appButton' : 'text-appIcon'}
                size={currentSize.chevronSize}
-               color={isOpen ? 'rgb(var(--color-app-button))' : 'rgb(var(--color-app-icon))'}
-               strokeWidth={2}
             />
          );
       };
@@ -352,15 +353,8 @@ const ExtendedPickerComponent = forwardRef<ExtendedPickerRef, ExtendedPickerComp
               ${currentVariant.content}
               ${currentSize.content}
               ${variant === 'minimal' ? 'rounded-b-xl' : 'rounded-xl mt-1'}
-            `}
-                  style={
-                     currentVariant.shadow
-                        ? {
-                             shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                             elevation: 2,
-                          }
-                        : undefined
-                  }>
+              ${currentVariant.shadow ? 'shadow-md' : ''}
+               `}>
                   {content}
                   {renderCloseButton()}
                </View>
@@ -376,15 +370,8 @@ const ExtendedPickerComponent = forwardRef<ExtendedPickerRef, ExtendedPickerComp
           ${variant !== 'minimal' ? 'rounded-xl' : ''}
           ${disabled ? 'opacity-50' : ''}
           ${className}
-        `}
-            style={
-               currentVariant.shadow
-                  ? {
-                       shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                       elevation: 4,
-                    }
-                  : undefined
-            }>
+          ${currentVariant.shadow ? 'shadow-md' : ''}
+        `}>
             {/* Header */}
             {showToggleButton && (
                <TouchableOpacity

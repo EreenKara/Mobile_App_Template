@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Platform } from 'react-native';
 import { ProfileStackParamList } from './NavigationTypes';
-import customColors from '@styles/tailwind.colors';
+import useTailwindColors from '@styles/tailwind.colors';
 import NavBarTitle from '@screens/shared/navbarTitle';
 import ProfileScreen from '@screens/profile/Profile';
 import SettingsScreen from '@screens/profile/Settings';
@@ -15,212 +15,89 @@ import AddressChangeScreen from '@screens/profile/AddressChange';
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
-// Screen configuration for better organization and maintainability
-const screenConfig = {
-   // Main profile section
-   main: {
-      ProfileMain: {
-         component: ProfileScreen,
-         title: 'Profil',
-         headerShown: false,
-         animation: 'fade' as const,
-      },
-   },
-
-   // Settings and account management
-   account: {
-      Settings: {
-         component: SettingsScreen,
-         title: 'Ayarlar',
-         icon: 'settings',
-      },
-      PersonalInformation: {
-         component: PersonalInformationScreen,
-         title: 'Kişisel Bilgiler',
-         icon: 'user',
-      },
-      AddressInformation: {
-         component: AddressInformationScreen,
-         title: 'Adres Bilgileri',
-         icon: 'map-pin',
-      },
-      AddressChange: {
-         component: AddressChangeScreen,
-         title: 'Adres Değiştir',
-         icon: 'edit',
-         presentation: 'modal' as const,
-      },
-   },
-
-   // Payment and financial
-   payment: {
-      Payment: {
-         component: PaymentScreen,
-         title: 'Ödeme Yöntemleri',
-         icon: 'credit-card',
-      },
-      AddCard: {
-         component: AddCardScreen,
-         title: 'Kart Ekle',
-         icon: 'plus',
-         presentation: 'modal' as const,
-      },
-   },
-
-   // Shared navigation
-   shared: {
-      Shared: {
-         component: SharedNavigator,
-         headerShown: false,
-      },
-   },
-} as const;
-
 const ProfileNavigator: React.FC = () => {
-   // Enhanced header title styling
-   const getHeaderTitleStyle = () => ({
-      fontFamily: 'Inter-Regular',
-      fontWeight: '600' as const,
-      fontSize: Platform.select({
-         ios: 17,
-         android: 20,
-      }),
-      color: customColors.appText,
-      letterSpacing: Platform.select({
-         ios: -0.24,
-         android: 0,
-      }),
-   });
+   const tailwindColors = useTailwindColors();
 
-   // Enhanced header styling with professional appearance
-   const getHeaderStyle = () => ({
-      backgroundColor: customColors.appTransition,
-      elevation: 2, // Subtle Android shadow
-      shadowColor: customColors.appTransparentColor, // iOS shadow
-      shadowOffset: {
-         width: 0,
-         height: 1,
-      },
-      shadowOpacity: 0.08,
-      shadowRadius: 3,
-      borderBottomWidth: 0.5,
-      borderBottomColor: customColors.appBorderColor,
-   });
-
-   // Common screen options for consistent styling
-   const getCommonScreenOptions = () => ({
+   // Common screen options
+   const commonScreenOptions = {
       headerShown: true,
       headerTitleAlign: 'center' as const,
-      headerStyle: getHeaderStyle(),
-      headerTitleStyle: getHeaderTitleStyle(),
-      headerTintColor: customColors.appButton,
-
-      // Enhanced back button styling
+      headerStyle: {
+         backgroundColor: tailwindColors.appTransition,
+      },
+      headerTitleStyle: {
+         fontFamily: 'Inter-Regular',
+         fontWeight: '600' as const,
+         fontSize: Platform.select({ ios: 17, android: 20 }),
+         color: tailwindColors.appText,
+      },
+      headerTintColor: tailwindColors.appButton,
       headerBackTitleVisible: false,
-      headerBackButtonMenuEnabled: true,
-
-      // Navigation bar title component
-      headerRight: () => <NavBarTitle />,
-
-      // Animation configuration
       animation: 'slide_from_right' as const,
-      animationDuration: 300,
-
       // Status bar configuration
       statusBarStyle: 'dark' as const,
-      statusBarBackgroundColor: customColors.appTransition,
-
-      // Gesture configuration
-      gestureEnabled: true,
-      gestureDirection: 'horizontal' as const,
-   });
-
-   // Get screen options based on type and configuration
-   const getScreenOptions = (screenName: string, config: any) => {
-      const baseOptions = getCommonScreenOptions();
-
-      return {
-         ...baseOptions,
-         title: config.title,
-         headerShown: config.headerShown ?? true,
-         presentation: config.presentation ?? 'card',
-         animation: config.animation ?? baseOptions.animation,
-
-         // Modal-specific styling
-         ...(config.presentation === 'modal' && {
-            headerStyle: {
-               ...getHeaderStyle(),
-               backgroundColor: customColors.appBackground,
-            },
-            animationDuration: 400,
-            gestureEnabled: false, // Disable swipe for modals
-         }),
-
-         // Main screen specific styling
-         ...(screenName === 'ProfileMain' && {
-            gestureEnabled: false, // Disable back gesture on main profile
-         }),
-      };
+      statusBarBackgroundColor: tailwindColors.appBar,
    };
 
    return (
       <Stack.Navigator
          id={undefined}
          initialRouteName="ProfileMain"
-         screenOptions={getCommonScreenOptions()}>
+         screenOptions={commonScreenOptions}>
          {/* Main Profile Screen */}
          <Stack.Screen
             name="ProfileMain"
-            component={screenConfig.main.ProfileMain.component}
-            options={getScreenOptions('ProfileMain', screenConfig.main.ProfileMain)}
+            component={ProfileScreen}
+            options={{
+               title: 'Profil',
+               headerShown: false,
+            }}
          />
 
-         {/* Account Management Screens */}
-         <Stack.Screen
-            name="Settings"
-            component={screenConfig.account.Settings.component}
-            options={getScreenOptions('Settings', screenConfig.account.Settings)}
-         />
+         {/* Settings Screens */}
+         <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: 'Ayarlar' }} />
+
          <Stack.Screen
             name="PersonalInformation"
-            component={screenConfig.account.PersonalInformation.component}
-            options={getScreenOptions(
-               'PersonalInformation',
-               screenConfig.account.PersonalInformation,
-            )}
+            component={PersonalInformationScreen}
+            options={{ title: 'Kişisel Bilgiler' }}
          />
+
          <Stack.Screen
             name="AddressInformation"
-            component={screenConfig.account.AddressInformation.component}
-            options={getScreenOptions(
-               'AddressInformation',
-               screenConfig.account.AddressInformation,
-            )}
+            component={AddressInformationScreen}
+            options={{ title: 'Adres Bilgileri' }}
          />
+
          <Stack.Screen
             name="AddressChange"
-            component={screenConfig.account.AddressChange.component}
-            options={getScreenOptions('AddressChange', screenConfig.account.AddressChange)}
+            component={AddressChangeScreen}
+            options={{
+               title: 'Adres Değiştir',
+               presentation: 'modal',
+            }}
          />
 
          {/* Payment Screens */}
          <Stack.Screen
             name="Payment"
-            component={screenConfig.payment.Payment.component}
-            options={getScreenOptions('Payment', screenConfig.payment.Payment)}
+            component={PaymentScreen}
+            options={{ title: 'Ödeme Yöntemleri' }}
          />
 
          <Stack.Screen
             name="AddCard"
-            component={screenConfig.payment.AddCard.component}
-            options={getScreenOptions('AddCard', screenConfig.payment.AddCard)}
+            component={AddCardScreen}
+            options={{
+               title: 'Kart Ekle',
+               presentation: 'modal',
+            }}
          />
-         <Stack.Screen
-            name="Shared"
-            component={screenConfig.shared.Shared.component}
-            options={getScreenOptions('Shared', screenConfig.shared.Shared)}
-         />
+
+         {/* Shared Navigator */}
+         <Stack.Screen name="Shared" component={SharedNavigator} options={{ headerShown: false }} />
       </Stack.Navigator>
    );
 };
+
 export default ProfileNavigator;

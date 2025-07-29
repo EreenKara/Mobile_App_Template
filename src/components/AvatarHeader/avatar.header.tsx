@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { Avatar } from 'react-native-paper';
 import { User, Settings, MoreHorizontal, Edit3, Camera } from 'lucide-react-native';
 import NotificationBellComponent from '@components/NotificationBell/notification.bell';
 import { UserProfile as UserType, Notification } from '@apptypes/index';
+import ImageComponent from '@mycomponents/Image';
+import IconComponent from '@mycomponents/LucidImage';
 
 interface AvatarHeaderComponentProps {
    user?: UserType;
@@ -76,17 +77,17 @@ const AvatarHeaderComponent: React.FC<AvatarHeaderComponentProps> = ({
       default: {
          container: 'bg-appBackground border-b border-appBorderColor/20',
          textColor: 'text-appText',
-         subtitleColor: 'text-appIcon',
+         subtitleColor: 'text-appText',
       },
       compact: {
          container: 'bg-appCardBackground rounded-xl',
          textColor: 'text-appCardText',
-         subtitleColor: 'text-appCardText/70',
+         subtitleColor: 'text-appText/70',
       },
       detailed: {
          container: 'bg-appTransition rounded-xl',
          textColor: 'text-appText',
-         subtitleColor: 'text-appIcon',
+         subtitleColor: 'text-appText',
       },
    };
 
@@ -117,30 +118,19 @@ const AvatarHeaderComponent: React.FC<AvatarHeaderComponentProps> = ({
       ${currentSize.container}
       ${currentVariant.container}
       ${className}
-    `}
-         style={
-            variant === 'compact' || variant === 'detailed'
-               ? {
-                    shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                    elevation: 2,
-                    borderWidth: 1,
-                    borderColor: 'rgb(var(--color-app-border))',
-                 }
-               : undefined
-         }>
+      ${variant === 'compact' || variant === 'detailed' ? 'border border-appBorderColor shadow-md' : ''}
+    `}>
          {/* Left Section - Avatar & Info */}
          <View className="flex-row items-center flex-1">
             {/* Avatar */}
-            <TouchableOpacity onPress={handleAvatarPress} className="relative" activeOpacity={0.7}>
+            <TouchableOpacity
+               onPress={handleAvatarPress}
+               className="relative border border-appBorderColor rounded-full"
+               activeOpacity={0.7}>
                {user?.image ? (
-                  <Image
+                  <ImageComponent
                      source={{ uri: user.image }}
-                     style={{
-                        width: currentSize.avatar,
-                        height: currentSize.avatar,
-                        borderRadius: currentSize.avatar / 2,
-                     }}
-                     className="bg-appTransition"
+                     className="bg-appTransition rounded-full w-10 h-10"
                   />
                ) : (
                   <View
@@ -152,7 +142,7 @@ const AvatarHeaderComponent: React.FC<AvatarHeaderComponentProps> = ({
                      className="bg-appTransition items-center justify-center">
                      <Text
                         className={`
-                text-appIcon font-appFont font-bold
+                text-appText font-appFont font-bold
                 ${size === 'small' ? 'text-xl' : size === 'medium' ? 'text-2xl' : 'text-3xl'}
               `}>
                         {getUserInitials(user)}
@@ -194,8 +184,8 @@ const AvatarHeaderComponent: React.FC<AvatarHeaderComponentProps> = ({
                {variant === 'detailed' && (
                   <View className="flex-row items-center mt-2">
                      <View className="flex-row items-center mr-4">
-                        <User size={14} color="rgb(var(--color-app-icon))" strokeWidth={2} />
-                        <Text className="text-appIcon font-appFont text-sm ml-1">Kullanıcı</Text>
+                        <IconComponent Icon={User} className="text-appText" size={14} />
+                        <Text className="text-appText font-appFont text-sm ml-1">Kullanıcı</Text>
                      </View>
 
                      <View className="flex-row items-center">
@@ -217,10 +207,10 @@ const AvatarHeaderComponent: React.FC<AvatarHeaderComponentProps> = ({
               ${currentSize.buttonSize} rounded-lg bg-appTransition items-center justify-center
             `}
                   activeOpacity={0.7}>
-                  <Edit3
+                  <IconComponent
+                     Icon={Edit3}
+                     className="text-appText"
                      size={currentSize.iconSize}
-                     color="rgb(var(--color-app-icon))"
-                     strokeWidth={2}
                   />
                </TouchableOpacity>
             )}
@@ -233,10 +223,10 @@ const AvatarHeaderComponent: React.FC<AvatarHeaderComponentProps> = ({
               ${currentSize.buttonSize} rounded-lg bg-appTransition items-center justify-center
             `}
                   activeOpacity={0.7}>
-                  <Settings
+                  <IconComponent
+                     Icon={Settings}
+                     className="text-appText"
                      size={currentSize.iconSize}
-                     color="rgb(var(--color-app-icon))"
-                     strokeWidth={2}
                   />
                </TouchableOpacity>
             )}
@@ -261,10 +251,10 @@ const AvatarHeaderComponent: React.FC<AvatarHeaderComponentProps> = ({
               ${currentSize.buttonSize} rounded-lg bg-appTransition items-center justify-center
             `}
                   activeOpacity={0.7}>
-                  <MoreHorizontal
+                  <IconComponent
+                     Icon={MoreHorizontal}
+                     className="text-appIcon"
                      size={currentSize.iconSize}
-                     color="rgb(var(--color-app-icon))"
-                     strokeWidth={2}
                   />
                </TouchableOpacity>
             )}
@@ -272,14 +262,7 @@ const AvatarHeaderComponent: React.FC<AvatarHeaderComponentProps> = ({
 
          {/* Action Menu */}
          {showActions && (
-            <View
-               className="absolute top-full right-0 mt-2 bg-appCardBackground rounded-xl p-2 z-10"
-               style={{
-                  shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                  elevation: 4,
-                  borderWidth: 1,
-                  borderColor: 'rgb(var(--color-app-border))',
-               }}>
+            <View className="absolute top-full right-0 mt-2 bg-appCardBackground rounded-xl p-2 z-10 shadow-md">
                <TouchableOpacity
                   onPress={() => {
                      onEditPress?.();
@@ -287,7 +270,7 @@ const AvatarHeaderComponent: React.FC<AvatarHeaderComponentProps> = ({
                   }}
                   className="flex-row items-center p-3 rounded-lg"
                   activeOpacity={0.7}>
-                  <Edit3 size={16} color="rgb(var(--color-app-card-text))" strokeWidth={2} />
+                  <IconComponent Icon={Edit3} className="text-appCardText" size={16} />
                   <Text className="text-appCardText font-appFont ml-2">Profili Düzenle</Text>
                </TouchableOpacity>
 
@@ -298,7 +281,7 @@ const AvatarHeaderComponent: React.FC<AvatarHeaderComponentProps> = ({
                   }}
                   className="flex-row items-center p-3 rounded-lg"
                   activeOpacity={0.7}>
-                  <Settings size={16} color="rgb(var(--color-app-card-text))" strokeWidth={2} />
+                  <IconComponent Icon={Settings} className="text-appCardText" size={16} />
                   <Text className="text-appCardText font-appFont ml-2">Ayarlar</Text>
                </TouchableOpacity>
             </View>

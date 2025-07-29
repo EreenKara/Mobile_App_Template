@@ -1,26 +1,30 @@
 import React from 'react';
 import {
    TouchableOpacity,
-   Image,
    Text,
    View,
    ImageStyle,
    StyleProp,
    TextStyle,
+   ImageSourcePropType,
 } from 'react-native';
+import { LucideIcon, LucideProps } from 'lucide-react-native';
 import { ChevronRight } from 'lucide-react-native';
-
+import IconComponent from '@mycomponents/LucidImage';
+import { useTailwindColors } from '@styles/tailwind.colors';
+import ImageComponent from '@mycomponents/Image';
 interface MenuItemComponentProps {
    iconComponent?: React.ReactNode;
-   icon?: any;
+   icon?: ImageSourcePropType;
+   iconLucide?: LucideIcon;
    title: string;
    onPress?: () => void;
-   tintColor?: string;
+   tintColorNW?: string;
    imageStyle?: StyleProp<ImageStyle>;
-   textStyle?: StyleProp<TextStyle>;
+   textClassName?: string;
    description?: string;
    subtitle?: string; // Profile için eklendi
-   rightIcon?: any;
+   rightIcon?: ImageSourcePropType;
    rightIconComponent?: React.ReactNode;
    touchable?: boolean;
    variant?: 'default' | 'card' | 'compact' | 'danger'; // danger eklendi
@@ -35,10 +39,11 @@ interface MenuItemComponentProps {
 export const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
    iconComponent,
    icon,
+   iconLucide,
    title,
-   tintColor,
+   tintColorNW = 'text-appIcon',
    imageStyle,
-   textStyle,
+   textClassName = '',
    description = '',
    subtitle = '', // Profile için eklendi
    rightIcon,
@@ -53,6 +58,7 @@ export const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
    badgeCount = 0, // Profile için eklendi
    onPress = () => {},
 }) => {
+   const colors = useTailwindColors();
    // Responsive sizing configurations
    const sizeConfig = {
       small: {
@@ -99,7 +105,7 @@ export const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
          description: 'text-appText/70',
       },
       danger: {
-         container: 'bg-transparent',
+         container: 'bg-appCardBackground',
          text: 'text-appError',
          description: 'text-appError/70',
       },
@@ -113,18 +119,15 @@ export const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
 
    // Container styles - Profile için güncellenmiş
    const containerStyles = `
-    flex-row items-center
-    ${currentSize.container}
-    ${currentVariant.container}
-    ${disabledStyles}
+    flex-row items-center 
+    ${currentSize.container} 
+    ${currentVariant.container} 
+    ${disabledStyles} 
     ${className}
   `;
 
    // Icon tint color - danger variant için özel renk
-   const iconTintColor =
-      variant === 'danger'
-         ? 'rgb(var(--color-app-error))'
-         : tintColor || 'rgb(var(--color-app-icon))';
+   const iconTintColor = variant === 'danger' ? 'text-appError' : tintColorNW || colors.appIcon;
 
    // Content component
    const ContentComponent = (
@@ -135,14 +138,15 @@ export const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
                {iconComponent}
             </View>
          )}
-
-         {icon && (
+         {icon && !iconComponent && (
             <View className={`w-10 h-10 items-center justify-center ${currentSize.spacing}`}>
-               <Image
-                  source={icon}
-                  style={[currentSize.icon, { tintColor: iconTintColor }, imageStyle]}
-                  resizeMode="contain"
-               />
+               <ImageComponent source={icon} className="w-4 h-4 ml-2" resizeMode="contain" />
+            </View>
+         )}
+         {/* Icon rendering based  on type */}
+         {iconLucide && !iconComponent && (
+            <View className={`w-10 h-10 items-center justify-center ${currentSize.spacing}`}>
+               <IconComponent Icon={iconLucide} size={24} className={iconTintColor} />
             </View>
          )}
 
@@ -151,19 +155,17 @@ export const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
             <Text
                className={`
             font-medium text-base
-            ${currentVariant.text}
-          `}
-               style={textStyle}>
+            ${textClassName}
+          `}>
                {title}
             </Text>
 
             {/* Subtitle veya description göster */}
             {(subtitle || description) && (
                <Text
-                  className={`
-              text-appText/60 text-sm mt-1
-            `}
-                  style={textStyle}>
+                  className={`text-sm mt-1 
+              ${textClassName}
+            `}>
                   {subtitle || description}
                </Text>
             )}
@@ -183,17 +185,12 @@ export const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
             {rightIconComponent && <View className="ml-2">{rightIconComponent}</View>}
 
             {rightIcon && (
-               <Image
-                  source={rightIcon}
-                  style={[{ width: 15, height: 15, tintColor: iconTintColor }]}
-                  className="ml-2"
-                  resizeMode="contain"
-               />
+               <ImageComponent source={rightIcon} className="w-4 h-4 ml-2" resizeMode="contain" />
             )}
 
             {showArrow && touchable && !rightIcon && !rightIconComponent && (
                <View className="ml-2">
-                  <ChevronRight size={20} color="rgb(var(--color-app-icon))" />
+                  <IconComponent Icon={ChevronRight} size={20} className="text-appIcon" />
                </View>
             )}
          </View>

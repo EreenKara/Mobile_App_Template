@@ -1,13 +1,7 @@
 import React, { useRef } from 'react';
-import {
-   Pressable,
-   Text,
-   View,
-   Image,
-   Dimensions,
-   Animated,
-   useWindowDimensions,
-} from 'react-native';
+import { Pressable, Text, View, Image, Animated, useWindowDimensions } from 'react-native';
+import { useTailwindColors } from '@styles/tailwind.colors';
+import ImageComponent from '@mycomponents/Image';
 
 interface ChoiceCardComponentProps {
    title: string;
@@ -43,7 +37,7 @@ const ChoiceCardComponent: React.FC<ChoiceCardComponentProps> = ({
    const { width: windowWidth } = useWindowDimensions();
    const scaleValue = useRef(new Animated.Value(1)).current;
    const opacityValue = useRef(new Animated.Value(1)).current;
-
+   const colors = useTailwindColors();
    // Size configurations
    const sizeConfig = {
       small: {
@@ -165,29 +159,15 @@ const ChoiceCardComponent: React.FC<ChoiceCardComponentProps> = ({
           ${getBorderStyle()}
           ${disabledStyles}
           ${className}
+          ${showShadow ? 'shadow-md' : ''}
+          ${className}
         `}
-            style={[
-               {
-                  borderWidth: currentSize.borderWidth,
-                  height: cardHeight,
-               },
-               showShadow && {
-                  shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                  shadowOffset: {
-                     width: 0,
-                     height: 4,
-                  },
-                  shadowOpacity: 0.1,
-                  shadowRadius: 6,
-                  elevation: 8,
-               },
-            ]}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             onPress={onPress}
             disabled={disabled}
             android_ripple={{
-               color: 'rgb(var(--color-app-button) / 0.1)',
+               color: colors.appButton,
                borderless: false,
             }}>
             {/* Title */}
@@ -203,14 +183,11 @@ const ChoiceCardComponent: React.FC<ChoiceCardComponentProps> = ({
 
             {/* Image */}
             <View className="flex-1 items-center justify-center">
-               <Image
+               <ImageComponent
                   source={image}
-                  style={{
-                     width: '100%',
-                     height: imageHeight,
-                     tintColor: tintColor || 'rgb(var(--color-app-icon))',
-                  }}
-                  resizeMode="contain"
+                  className={`w-full h-full ${tintColor ? 'text-appIcon' : ''}`}
+                  tintColor={tintColor || colors.appIcon}
+                  resizeMode="cover"
                />
             </View>
 

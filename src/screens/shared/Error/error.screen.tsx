@@ -4,6 +4,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { XCircle, AlertTriangle, Info, AlertOctagon, Home, RotateCcw } from 'lucide-react-native';
 import ButtonComponent from '@mycomponents/Button/Button';
 import { SharedStackParamList } from '@navigation/NavigationTypes';
+import { useTailwindColors } from '@styles/tailwind.colors';
+import IconComponent from '@mycomponents/LucidImage';
 
 // ==================== TYPES & INTERFACES ====================
 
@@ -78,6 +80,7 @@ const ICON_COMPONENTS = {
 // ==================== MAIN COMPONENT ====================
 
 const ErrorScreen: React.FC<Props> = ({ navigation, route }) => {
+   const colors = useTailwindColors();
    // ==================== HOOKS & STATE ====================
 
    const params = route.params as ErrorParams;
@@ -298,7 +301,7 @@ const ErrorScreen: React.FC<Props> = ({ navigation, route }) => {
                   onPress={handleRetry}
                   className={`w-full py-3 px-8 rounded-2xl flex-row items-center justify-center ${getSecondaryButtonStyle()}`}
                   activeOpacity={0.7}>
-                  <RotateCcw size={18} color={getSecondaryButtonTextColor()} className="mr-2" />
+                  <IconComponent Icon={RotateCcw} size={18} className="text-appButtonText mr-2" />
                   <Text className={`font-medium text-base ${getSecondaryButtonTextColor()}`}>
                      {params.retryAction.text}
                   </Text>
@@ -363,9 +366,9 @@ const ErrorScreen: React.FC<Props> = ({ navigation, route }) => {
       switch (errorConfig.variant) {
          case 'minimal':
          case 'card':
-            return 'rgb(var(--color-app-error))';
+            return 'text-appError';
          default:
-            return 'rgb(var(--color-app-error))';
+            return 'text-appError';
       }
    };
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Linking, Alert, TextInput } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
 import { ProfileStackParamList } from '@navigation/NavigationTypes';
@@ -18,7 +18,10 @@ import {
    Users,
    Star,
    MessageSquare,
+   LucideIcon,
 } from 'lucide-react-native';
+import IconComponent from '@mycomponents/LucidImage';
+import { useTailwindColors } from '@styles/tailwind.colors';
 
 type ScreenProps = NativeStackScreenProps<ProfileStackParamList, 'Help'>;
 
@@ -33,12 +36,13 @@ interface ContactOption {
    id: string;
    title: string;
    subtitle: string;
-   icon: React.ComponentType<any>;
+   icon: LucideIcon;
    action: () => void;
    colorVar: string;
 }
 
 const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
+   const colors = useTailwindColors();
    const { darkMode, language } = useSelector((state: RootState) => state.settings);
    const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
    const [feedbackText, setFeedbackText] = useState('');
@@ -135,36 +139,35 @@ const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
 
    // Contact handlers
    const handleEmailContact = useCallback(() => {
-      const email = 'support@myapp.com';
-      const subject = 'MyApp Destek Talebi';
-      const body = `Merhaba,\n\nUygulama Versiyonu: 1.0.0\nTema: ${darkMode ? 'Karanlık' : 'Açık'}\nDil: ${language}\n\nSorunum:\n`;
-
-      Linking.openURL(
-         `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+      Alert.alert(
+         'E-posta Desteği',
+         `Destek ekibimizle iletişime geçin:\n\n📧 E-posta: support@myapp.com\n\n📱 Uygulama Versiyonu: 1.0.0\n🎨 Tema: ${darkMode === 'dark' ? 'Karanlık' : 'Açık'}\n🌐 Dil: ${language}\n\nE-posta desteği bilgisi gösterildi.`,
+         [{ text: 'Tamam', style: 'default' }],
       );
    }, [darkMode, language]);
 
    const handlePhoneContact = useCallback(() => {
       Alert.alert(
          'Telefon Desteği',
-         'Telefon desteğimiz Pazartesi-Cuma 09:00-18:00 saatleri arasında hizmet vermektedir.',
-         [
-            { text: 'Ara', onPress: () => Linking.openURL('tel:+902125550123') },
-            { text: 'İptal', style: 'cancel' },
-         ],
+         '📞 Telefon: +90 (212) 555-0123\n\n⏰ Çalışma Saatleri:\nPazartesi - Cuma: 09:00 - 18:00\nCumartesi: 10:00 - 16:00\nPazar: Kapalı\n\nTelefon desteği bilgisi gösterildi.',
+         [{ text: 'Tamam', style: 'default' }],
       );
    }, []);
 
    const handleLiveChat = useCallback(() => {
       Alert.alert(
          'Canlı Destek',
-         'Canlı destek hattımız yakında açılacaktır. Şimdilik e-posta veya telefon ile iletişime geçebilirsiniz.',
-         [{ text: 'Tamam' }],
+         '💬 Canlı destek hattımız yakında açılacaktır.\n\n📧 Şimdilik e-posta desteği kullanabilirsiniz: support@myapp.com\n📞 Veya telefon desteğimizi arayabilirsiniz: +90 (212) 555-0123\n\nCanlı destek bilgisi gösterildi.',
+         [{ text: 'Tamam', style: 'default' }],
       );
    }, []);
 
    const handleCommunityForum = useCallback(() => {
-      Linking.openURL('https://community.myapp.com');
+      Alert.alert(
+         'Topluluk Forumu',
+         '👥 Topluluk Forumu: community.myapp.com\n\n🗣️ Diğer kullanıcılarla deneyimlerinizi paylaşın\n❓ Sorularınıza cevap bulun\n💡 İpuçları ve püf noktaları keşfedin\n\nTopluluk forumu bilgisi gösterildi.',
+         [{ text: 'Tamam', style: 'default' }],
+      );
    }, []);
 
    // FAQ toggle
@@ -180,12 +183,25 @@ const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
       if (feedbackText.trim()) {
          Alert.alert(
             'Geri Bildirim Gönderildi',
-            'Değerli geri bildiriminiz için teşekkür ederiz. En kısa sürede inceleyeceğiz.',
-            [{ text: 'Tamam' }],
+            `📝 Geri bildiriminiz:\n"${feedbackText.trim()}"\n\n✅ Değerli geri bildiriminiz için teşekkür ederiz!\n🔍 En kısa sürede inceleyeceğiz.\n📧 Gerekirse size dönüş yapacağız.\n\nGeri bildirim başarıyla kaydedildi.`,
+            [{ text: 'Tamam', style: 'default' }],
          );
          setFeedbackText('');
+      } else {
+         Alert.alert('Eksik Bilgi', 'Lütfen geri bildirim mesajınızı yazın.', [
+            { text: 'Tamam', style: 'default' },
+         ]);
       }
    }, [feedbackText]);
+
+   // Handle help center
+   const handleHelpCenter = useCallback(() => {
+      Alert.alert(
+         'Detaylı Yardım Merkezi',
+         '📚 Yardım Merkezi: help.myapp.com\n\n📖 Detaylı kılavuzlar\n🎥 Video eğitimleri\n📋 Adım adım talimatlar\n🔧 Sorun giderme rehberi\n\nYardım merkezi bilgisi gösterildi.',
+         [{ text: 'Tamam', style: 'default' }],
+      );
+   }, []);
 
    return (
       <ScrollView className="flex-1 bg-appBackground">
@@ -207,23 +223,17 @@ const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
 
             <View className="flex-row flex-wrap justify-between">
                {contactOptions.map(option => {
-                  const IconComponent = option.icon;
+                  const Icon = option.icon;
                   return (
                      <TouchableOpacity
                         key={option.id}
-                        className="w-[48%] mb-3 p-4 rounded-xl items-center bg-appCardBackground"
-                        style={{
-                           shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                           elevation: 2,
-                           borderWidth: 1,
-                           borderColor: 'rgb(var(--color-app-border))',
-                        }}
+                        className="shadow-md w-[48%] mb-3 p-4 rounded-xl items-center bg-appCardBackground"
                         onPress={option.action}
                         activeOpacity={0.7}>
                         <View
-                           className="w-12 h-12 rounded-full items-center justify-center mb-3"
-                           style={{ backgroundColor: `rgb(var(${option.colorVar}))` }}>
-                           <IconComponent size={24} color="white" strokeWidth={2} />
+                           className=" w-12 h-12 rounded-full items-center justify-center mb-3"
+                           style={{ backgroundColor: colors[option.colorVar] }}>
+                           <IconComponent Icon={Icon} size={24} className="text-appButtonText" />
                         </View>
 
                         <Text className="text-appCardText font-appFont font-semibold text-center text-sm">
@@ -249,7 +259,7 @@ const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
                <View className="flex-row space-x-2">
                   {categories.map(category => {
-                     const IconComponent = category.icon;
+                     const Icon = category.icon;
                      const isSelected = selectedCategory === category.id;
 
                      return (
@@ -260,21 +270,9 @@ const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
                               ${isSelected ? 'bg-appButton' : 'bg-appTransition'}
                            `}
                            onPress={() => setSelectedCategory(category.id)}>
-                           <IconComponent
-                              size={16}
-                              color={
-                                 isSelected
-                                    ? 'rgb(var(--color-app-button-text))'
-                                    : 'rgb(var(--color-app-icon))'
-                              }
-                              strokeWidth={2}
-                           />
+                           <IconComponent Icon={Icon} size={16} className="text-appIcon" />
 
-                           <Text
-                              className={`
-                              font-appFont font-medium text-sm ml-2
-                              ${isSelected ? 'text-appButtonText' : 'text-appIcon'}
-                           `}>
+                           <Text className="text-appCardText font-appFont font-medium text-sm ml-2">
                               {category.title}
                            </Text>
                         </TouchableOpacity>
@@ -287,14 +285,7 @@ const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
             {filteredFAQ.map(faq => (
                <TouchableOpacity
                   key={faq.id}
-                  className="bg-appCardBackground mb-3 p-4 rounded-xl"
-                  style={{
-                     shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                     elevation: 1,
-                     borderWidth: 1,
-                     borderColor: 'rgb(var(--color-app-border))',
-                  }}
-                  onPress={() => toggleFAQ(faq.id)}
+                  className="shadow-md border border-appBorder bg-appCardBackground mb-3 p-4 rounded-xl"
                   activeOpacity={0.7}>
                   <View className="flex-row items-center justify-between">
                      <Text className="text-appCardText flex-1 font-appFont font-medium text-base pr-2">
@@ -302,9 +293,9 @@ const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
                      </Text>
 
                      {expandedFAQ === faq.id ? (
-                        <ChevronDown size={20} color="rgb(var(--color-app-card-text))" />
+                        <IconComponent Icon={ChevronDown} size={20} className="text-appCardText" />
                      ) : (
-                        <ChevronRight size={20} color="rgb(var(--color-app-card-text))" />
+                        <IconComponent Icon={ChevronRight} size={20} className="text-appCardText" />
                      )}
                   </View>
 
@@ -323,18 +314,11 @@ const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
                Geri Bildirim Gönder
             </Text>
 
-            <View
-               className="bg-appCardBackground p-4 rounded-xl"
-               style={{
-                  shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                  elevation: 2,
-                  borderWidth: 1,
-                  borderColor: 'rgb(var(--color-app-border))',
-               }}>
+            <View className="shadow-md border border-appBorder bg-appCardBackground p-4 rounded-xl">
                <TextInput
                   className="bg-appTransition text-appText font-appFont text-base h-24 p-3 rounded-lg"
                   placeholder="Görüşlerinizi ve önerilerinizi paylaşın..."
-                  placeholderTextColor="rgb(var(--color-app-placeholder))"
+                  placeholderTextColor={colors.appPlaceholder}
                   multiline
                   textAlignVertical="top"
                   value={feedbackText}
@@ -345,7 +329,7 @@ const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
                   className="bg-appButton rounded-lg p-3 mt-3 flex-row items-center justify-center"
                   onPress={handleSendFeedback}
                   activeOpacity={0.8}>
-                  <Send size={18} color="rgb(var(--color-app-button-text))" strokeWidth={2} />
+                  <IconComponent Icon={Send} size={18} className="text-appButtonText mr-2" />
                   <Text className="text-appButtonText font-appFont font-semibold ml-2">Gönder</Text>
                </TouchableOpacity>
             </View>
@@ -356,9 +340,7 @@ const HelpScreen: React.FC<ScreenProps> = ({ navigation }) => {
             <Text className="text-appPlaceholder font-appFont text-sm text-center">
                Daha fazla yardıma mı ihtiyacınız var?
             </Text>
-            <TouchableOpacity
-               className="mt-2"
-               onPress={() => Linking.openURL('https://help.myapp.com')}>
+            <TouchableOpacity className="mt-2" onPress={handleHelpCenter}>
                <Text className="text-appButton font-appFont font-medium">
                   Detaylı Yardım Merkezi →
                </Text>

@@ -17,6 +17,7 @@ import {
    Smartphone,
    Volume2,
 } from 'lucide-react-native';
+import { useTailwindColors } from '@styles/tailwind.colors';
 
 type ScreenProps = NativeStackScreenProps<ProfileStackParamList, 'Settings'>;
 
@@ -26,12 +27,13 @@ interface SettingItem {
    subtitle?: string;
    icon: React.ComponentType<any>;
    type: 'switch' | 'navigation' | 'action';
-   value?: boolean;
+   value?: boolean | string;
    onPress?: () => void;
    onToggle?: (value: boolean) => void;
 }
 
 const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
+   const colors = useTailwindColors();
    // Redux state management
    const dispatch = useDispatch();
    const { darkMode, language } = useSelector((state: RootState) => state.settings);
@@ -71,10 +73,11 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
          {
             id: 'theme',
             title: 'Tema Seçimi',
-            subtitle: darkMode ? 'Karanlık Tema' : 'Açık Tema',
-            icon: darkMode ? Moon : Sun,
+            subtitle: darkMode === 'dark' ? 'Karanlık Tema' : 'Açık Tema',
+            icon: darkMode === 'dark' ? Moon : Sun,
             type: 'switch',
-            value: darkMode,
+            value: darkMode === 'dark',
+            onPress: handleThemeToggle,
             onToggle: handleThemeToggle,
          },
          {
@@ -84,6 +87,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
             icon: Bell,
             type: 'switch',
             value: notifications,
+            onPress: () => {},
             onToggle: setNotifications,
          },
          {
@@ -93,6 +97,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
             icon: Volume2,
             type: 'switch',
             value: sounds,
+            onPress: () => {},
             onToggle: setSounds,
          },
          {
@@ -102,6 +107,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
             icon: Lock,
             type: 'navigation',
             onPress: () => navigation.navigate('Security'),
+            onToggle: () => {},
          },
          {
             id: 'language',
@@ -110,6 +116,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
             icon: Globe,
             type: 'navigation',
             onPress: handleLanguagePress,
+            onToggle: () => {},
          },
          {
             id: 'device',
@@ -118,6 +125,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
             icon: Smartphone,
             type: 'navigation',
             onPress: () => showDeviceInfo(),
+            onToggle: () => {},
          },
          {
             id: 'help',
@@ -126,6 +134,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
             icon: HelpCircle,
             type: 'navigation',
             onPress: () => navigation.navigate('Help'),
+            onToggle: () => {},
          },
          {
             id: 'about',
@@ -134,6 +143,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
             icon: Info,
             type: 'navigation',
             onPress: () => navigation.navigate('About'),
+            onToggle: () => {},
          },
       ],
       [
@@ -151,7 +161,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
    const showDeviceInfo = useCallback(() => {
       Alert.alert(
          'Cihaz Bilgileri',
-         `Uygulama Versiyonu: 1.0.0\nSürüm: Beta\nSon Güncelleme: 2025\nTema: ${darkMode ? 'Karanlık' : 'Açık'}\nDil: ${languageOptions[language as keyof typeof languageOptions]}`,
+         `Uygulama Versiyonu: 1.0.0\nSürüm: Beta\nSon Güncelleme: 2025\nTema: ${darkMode === 'dark' ? 'Karanlık' : 'Açık'}\nDil: ${languageOptions[language as keyof typeof languageOptions]}`,
          [{ text: 'Tamam', style: 'default' }],
       );
    }, [darkMode, language]);
@@ -164,12 +174,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
          <TouchableOpacity
             key={item.id}
             // ✨ CSS Variables - Otomatik tema switching, hiç darkMode conditional yok
-            className="bg-appCardBackground rounded-xl mx-4 mb-3 p-4 sm:p-5 md:p-6 shadow-sm"
-            style={{
-               // CSS variables kullanıldığı için customColors'a gerek yok
-               shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-               elevation: 2,
-            }}
+            className="shadow-md bg-appCardBackground rounded-xl mx-4 mb-3 p-4 sm:p-5 md:p-6 shadow-sm"
             onPress={item.type === 'navigation' ? item.onPress : undefined}
             activeOpacity={item.type === 'navigation' ? 0.7 : 1}>
             <View className="flex-row items-center justify-between">
@@ -177,11 +182,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
                <View className="flex-row items-center flex-1">
                   {/* Icon Container - Otomatik tema switching */}
                   <View className="w-10 h-10 sm:w-12 sm:h-12 rounded-full items-center justify-center mr-4 bg-appTransition">
-                     <IconComponent
-                        size={20}
-                        color="rgb(var(--color-app-icon))" // CSS variable
-                        strokeWidth={2}
-                     />
+                     <IconComponent Icon={item.icon} size={20} className="text-appIcon" />
                   </View>
 
                   {/* Text Content - Otomatik tema switching */}
@@ -200,27 +201,19 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
                {/* Right Side - Control */}
                {item.type === 'switch' && (
                   <Switch
-                     value={item.value}
+                     value={Boolean(item.value)}
                      onValueChange={item.onToggle}
                      trackColor={{
-                        false: 'rgb(var(--color-app-disabled))',
-                        true: 'rgb(var(--color-app-button))',
+                        false: colors.appDisabled,
+                        true: colors.appButton,
                      }}
-                     thumbColor={
-                        item.value
-                           ? 'rgb(var(--color-app-button-text))'
-                           : 'rgb(var(--color-app-placeholder))'
-                     }
-                     ios_backgroundColor="rgb(var(--color-app-disabled))"
+                     thumbColor={Boolean(item.value) ? colors.appButtonText : colors.appPlaceholder}
+                     ios_backgroundColor={colors.appDisabled}
                   />
                )}
 
                {item.type === 'navigation' && (
-                  <ChevronRight
-                     size={20}
-                     color="rgb(var(--color-app-card-text))" // CSS variable
-                     strokeWidth={2}
-                  />
+                  <IconComponent Icon={ChevronRight} size={20} className="text-appCardText" />
                )}
             </View>
          </TouchableOpacity>
@@ -252,7 +245,7 @@ const SettingsScreen: React.FC<ScreenProps> = ({ navigation }) => {
                © 2025 Tüm hakları saklıdır
             </Text>
             <Text className="text-appPlaceholder font-appFont text-xs text-center mt-2">
-               {darkMode ? '🌙 Karanlık Tema Aktif' : '☀️ Açık Tema Aktif'}
+               {darkMode === 'dark' ? '🌙 Karanlık Tema Aktif' : '☀️ Açık Tema Aktif'}
             </Text>
          </View>
       </ScrollView>

@@ -20,6 +20,7 @@ import { RootState } from '@contexts/store';
 import LoadingComponent from '@mycomponents/Loading/laoading';
 import { useAsync } from '@hooks/modular/useAsync';
 import userService from '@services/backend/userService';
+import IconComponent from '@mycomponents/LucidImage';
 
 // Types
 type ScreenProps = NativeStackScreenProps<ProfileStackParamList, 'PersonalInformation'>;
@@ -91,7 +92,7 @@ const PersonalInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
                         resizeMode="cover"
                      />
                   ) : (
-                     <User size={64} color="rgb(var(--color-app-button-text))" />
+                     <IconComponent Icon={User} size={64} className="text-appButtonText" />
                   )}
                </View>
 
@@ -100,7 +101,7 @@ const PersonalInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
                   onPress={handleChangePhoto}
                   className="absolute bottom-0 right-0 w-10 h-10 bg-appButton rounded-full items-center justify-center border-2 border-appCardBackground"
                   activeOpacity={0.7}>
-                  <Camera size={20} color="rgb(var(--color-app-button-text))" />
+                  <IconComponent Icon={Camera} size={20} className="text-appButtonText" />
                </TouchableOpacity>
             </View>
 
@@ -121,7 +122,7 @@ const PersonalInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
                onPress={handleEditProfile}
                className="flex-row items-center bg-appButton/10 px-6 py-3 rounded-lg"
                activeOpacity={0.7}>
-               <Edit3 size={18} color="rgb(var(--color-app-button))" />
+               <IconComponent Icon={Edit3} size={18} className="text-appButton" />
                <Text className="text-appButton font-medium ml-2">Profili Düzenle</Text>
             </TouchableOpacity>
          </View>
@@ -149,9 +150,9 @@ const PersonalInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
          {/* Status Icon */}
          <View className="ml-2">
             {value ? (
-               <UserCheck size={20} color="rgb(var(--color-app-success))" />
+               <IconComponent Icon={UserCheck} size={20} className="text-appSuccess" />
             ) : (
-               <Edit3 size={20} color="rgb(var(--color-app-icon))" />
+               <IconComponent Icon={Edit3} size={20} className="text-appIcon" />
             )}
          </View>
       </View>
@@ -162,28 +163,28 @@ const PersonalInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
          <Text className="text-appText font-bold text-lg mb-4">Kişisel Bilgiler</Text>
 
          {renderInfoItem(
-            <Mail size={24} color="rgb(var(--color-app-button))" />,
+            <IconComponent Icon={Mail} size={24} className="text-appButton" />,
             'E-posta Adresi',
             user?.email,
             'E-posta adresi girilmemiş',
          )}
 
          {renderInfoItem(
-            <User size={24} color="rgb(var(--color-app-button))" />,
+            <IconComponent Icon={User} size={24} className="text-appButton" />,
             'Ad Soyad',
             user?.name && user?.surname ? `${user.name} ${user.surname}` : user?.name,
             'Ad soyad bilgisi girilmemiş',
          )}
 
          {renderInfoItem(
-            <Phone size={24} color="rgb(var(--color-app-button))" />,
+            <IconComponent Icon={Phone} size={24} className="text-appButton" />,
             'Telefon Numarası',
             user?.phoneNumber,
             'Telefon numarası girilmemiş',
          )}
 
          {renderInfoItem(
-            <IdCard size={24} color="rgb(var(--color-app-button))" />,
+            <IconComponent Icon={IdCard} size={24} className="text-appButton" />,
             'TC Kimlik No',
             (user as any)?.identityNumber,
             'TC kimlik numarası girilmemiş',
@@ -230,7 +231,7 @@ const PersonalInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
                <RefreshControl
                   refreshing={userLoading}
                   onRefresh={handleRefresh}
-                  tintColor="rgb(var(--color-app-button))"
+                  className="text-appButton"
                />
             }>
             {/* Profile Header */}

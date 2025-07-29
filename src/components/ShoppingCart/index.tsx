@@ -11,7 +11,8 @@ import {
    TrendingUp,
    Tag,
 } from 'lucide-react-native';
-
+import IconComponent from '@mycomponents/LucidImage';
+import { useTailwindColors } from '@styles/tailwind.colors';
 export interface CartItem {
    id: string | number;
    name: string;
@@ -125,6 +126,7 @@ const ShoppingCartComponent: React.FC<ShoppingCartComponentProps> = ({
    loading = false,
    error,
 }) => {
+   const colors = useTailwindColors();
    // Size configurations
    const sizeConfig = {
       small: {
@@ -155,35 +157,35 @@ const ShoppingCartComponent: React.FC<ShoppingCartComponentProps> = ({
       default: {
          container: 'bg-appBackground border border-appBorderColor',
          text: 'text-appText',
-         icon: 'rgb(var(--color-app-icon))',
+         icon: 'text-appIcon',
          badge: 'bg-appButton text-appButtonText',
          shadow: false,
       },
       compact: {
          container: 'bg-appTransition',
          text: 'text-appText',
-         icon: 'rgb(var(--color-app-icon))',
+         icon: 'text-appIcon',
          badge: 'bg-appButton text-appButtonText',
          shadow: false,
       },
       card: {
          container: 'bg-appCardBackground border border-appBorderColor',
          text: 'text-appCardText',
-         icon: 'rgb(var(--color-app-icon))',
+         icon: 'text-appIcon',
          badge: 'bg-appButton text-appButtonText',
          shadow: true,
       },
       minimal: {
          container: 'bg-transparent',
          text: 'text-appText',
-         icon: 'rgb(var(--color-app-icon))',
+         icon: 'text-appIcon',
          badge: 'bg-appButton text-appButtonText',
          shadow: false,
       },
       badge: {
          container: 'bg-appButton',
          text: 'text-appButtonText',
-         icon: 'rgb(var(--color-app-button-text))',
+         icon: 'text-appButtonText',
          badge: 'bg-appBackground text-appText',
          shadow: true,
       },
@@ -279,22 +281,10 @@ const ShoppingCartComponent: React.FC<ShoppingCartComponentProps> = ({
           rounded-full
           items-center justify-center
           min-w-[16px] min-h-[16px]
-        `}
-            style={
-               currentVariant.shadow
-                  ? {
-                       shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                       elevation: 2,
-                    }
-                  : undefined
-            }>
+          ${currentVariant.shadow ? 'shadow-md' : ''}
+        `}>
             <Text
-               className={`font-appFont font-bold ${currentSize.badge.includes('text-xs') ? 'text-xs' : 'text-sm'}`}
-               style={{
-                  color: currentVariant.badge.includes('text-appButtonText')
-                     ? 'rgb(var(--color-app-button-text))'
-                     : 'rgb(var(--color-app-text))',
-               }}>
+               className={`${currentVariant.text} font-appFont font-bold ${currentSize.badge.includes('text-xs') ? 'text-xs text-appButtonText' : 'text-sm'}`}>
                {calculatedValues.actualItemCount > 99 ? '99+' : calculatedValues.actualItemCount}
             </Text>
          </View>
@@ -334,12 +324,7 @@ const ShoppingCartComponent: React.FC<ShoppingCartComponentProps> = ({
             {/* Discount Info */}
             {showDiscountInfo && calculatedValues.hasDiscount && (
                <View className="flex-row items-center mt-1">
-                  <Tag
-                     size={12}
-                     color="rgb(var(--color-app-button))"
-                     strokeWidth={2}
-                     className="mr-1"
-                  />
+                  <IconComponent Icon={Tag} size={12} className="text-appButton mr-1" />
                   <Text className="text-appButton font-appFont text-xs">
                      {formatPrice(calculatedValues.finalDiscount)}
                      {currency} tasarruf
@@ -439,15 +424,8 @@ const ShoppingCartComponent: React.FC<ShoppingCartComponentProps> = ({
         ${disabled ? 'opacity-50' : ''}
         ${interactive && !disabled ? 'active:opacity-70' : ''}
         ${className}
-      `}
-         style={
-            currentVariant.shadow
-               ? {
-                    shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                    elevation: 2,
-                 }
-               : undefined
-         }>
+        ${currentVariant.shadow ? 'shadow-md' : ''}
+      `}>
          {/* Icon with badge */}
          <View className="relative">
             {renderIcon()}

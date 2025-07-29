@@ -20,6 +20,7 @@ import { ProfileStackParamList } from '@navigation/NavigationTypes';
 import LoadingComponent from '@mycomponents/Loading/laoading';
 import ButtonComponent from '@mycomponents/Button/Button';
 import { useUserAddress, UserAddress } from '@hooks/profile/useUserAddress';
+import IconComponent from '@mycomponents/LucidImage';
 
 // Types
 type ScreenProps = NativeStackScreenProps<ProfileStackParamList, 'AddressInformation'>;
@@ -103,11 +104,11 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
    const getAddressIcon = (type: string) => {
       switch (type) {
          case 'home':
-            return <Home size={24} color="rgb(var(--color-app-button))" />;
+            return <IconComponent Icon={Home} size={24} className="text-appButton" />;
          case 'work':
-            return <Building size={24} color="rgb(var(--color-app-button))" />;
+            return <IconComponent Icon={Building} size={24} className="text-appButton" />;
          default:
-            return <MapPin size={24} color="rgb(var(--color-app-button))" />;
+            return <IconComponent Icon={MapPin} size={24} className="text-appButton" />;
       }
    };
 
@@ -143,7 +144,7 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
             {/* Default Badge */}
             {address.isDefault && (
                <View className="bg-appSuccess/10 px-3 py-1 rounded-full flex-row items-center">
-                  <Star size={14} color="rgb(var(--color-app-success))" />
+                  <IconComponent Icon={Star} size={14} className="text-appSuccess" />
                   <Text className="text-appSuccess text-xs font-medium ml-1">Varsayılan</Text>
                </View>
             )}
@@ -155,7 +156,7 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
 
             {/* City & District */}
             <View className="flex-row items-center">
-               <Navigation size={16} color="rgb(var(--color-app-icon))" />
+               <IconComponent Icon={Navigation} size={16} className="text-appIcon" />
                <Text className="text-appText/60 text-sm ml-1">
                   {address.districtName}, {address.cityName}
                </Text>
@@ -171,7 +172,7 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
                      className="flex-row items-center"
                      activeOpacity={0.7}
                      disabled={setDefaultLoading}>
-                     <Star size={16} color="rgb(var(--color-app-button))" />
+                     <IconComponent Icon={Star} size={16} className="text-appButton" />
                      <Text className="text-appButton text-sm ml-1">Varsayılan Yap</Text>
                   </TouchableOpacity>
                )}
@@ -179,14 +180,14 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
 
             <View className="flex-row items-center space-x-4">
                <TouchableOpacity onPress={() => handleEditAddress(address)} activeOpacity={0.7}>
-                  <Edit3 size={18} color="rgb(var(--color-app-icon))" />
+                  <IconComponent Icon={Edit3} size={18} className="text-appIcon" />
                </TouchableOpacity>
 
                <TouchableOpacity
                   onPress={() => handleDeleteAddress(address)}
                   activeOpacity={0.7}
                   disabled={deleteLoading}>
-                  <Trash2 size={18} color="rgb(var(--color-app-error))" />
+                  <IconComponent Icon={Trash2} size={18} className="text-appError" />
                </TouchableOpacity>
             </View>
          </View>
@@ -197,7 +198,7 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
       <View className="p-6 bg-appCardBackground border-b border-appBorderColor">
          <View className="flex-row items-center mb-4">
             <View className="w-12 h-12 bg-appButton/10 rounded-full items-center justify-center mr-4">
-               <MapPin size={24} color="rgb(var(--color-app-button))" />
+               <IconComponent Icon={MapPin} size={24} className="text-appButton" />
             </View>
             <View>
                <Text className="text-appText font-bold text-xl">Adres Bilgileri</Text>
@@ -230,7 +231,7 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
    const renderEmptyState = () => (
       <View className="flex-1 items-center justify-center p-8">
          <View className="w-24 h-24 bg-appButton/10 rounded-full items-center justify-center mb-6">
-            <MapPin size={48} color="rgb(var(--color-app-button))" />
+            <IconComponent Icon={MapPin} size={48} className="text-appButton" />
          </View>
          <Text className="text-appText font-bold text-xl mb-2">Kayıtlı Adres Yok</Text>
          <Text className="text-appText/60 text-center mb-6">
@@ -241,7 +242,7 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
             onPress={handleAddAddress}
             className="bg-appButton px-6 py-3 rounded-lg flex-row items-center"
             activeOpacity={0.7}>
-            <Plus size={20} color="rgb(var(--color-app-button-text))" />
+            <IconComponent Icon={Plus} size={20} className="text-appButtonText" />
             <Text className="text-appButtonText font-medium ml-2">İlk Adresi Ekle</Text>
          </TouchableOpacity>
       </View>
@@ -273,7 +274,7 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
    if (error && !hasAddresses) {
       return (
          <View className="flex-1 bg-appBackground items-center justify-center p-6">
-            <AlertCircle size={48} color="rgb(var(--color-app-error))" />
+            <IconComponent Icon={AlertCircle} size={48} className="text-appError" />
             <Text className="text-appError text-center text-lg mb-4 mt-4">
                Adres bilgileri yüklenirken bir hata oluştu.
             </Text>
@@ -297,8 +298,8 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
             refreshControl={
                <RefreshControl
                   refreshing={loading}
+                  className="text-appButton"
                   onRefresh={handleRefresh}
-                  tintColor="rgb(var(--color-app-button))"
                />
             }>
             {/* Header */}
@@ -330,7 +331,7 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
                         onPress={handleAddAddress}
                         className="bg-appButton/10 border-2 border-dashed border-appButton p-4 rounded-xl items-center justify-center"
                         activeOpacity={0.7}>
-                        <Plus size={32} color="rgb(var(--color-app-button))" />
+                        <IconComponent Icon={Plus} size={32} className="text-appButton" />
                         <Text className="text-appButton font-medium text-lg mt-2">
                            Yeni Adres Ekle
                         </Text>
@@ -349,7 +350,7 @@ const AddressInformationScreen: React.FC<ScreenProps> = ({ navigation }) => {
                   variant="primary"
                   size="large"
                   fullWidth
-                  leftIcon={<Plus size={20} color="rgb(var(--color-app-button-text))" />}
+                  leftIcon={<IconComponent Icon={Plus} size={20} className="text-appButtonText" />}
                />
             </View>
          )}

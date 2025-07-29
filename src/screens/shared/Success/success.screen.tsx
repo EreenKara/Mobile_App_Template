@@ -13,9 +13,11 @@ import {
    Home,
    ArrowRight,
    RotateCcw,
+   LucideIcon,
 } from 'lucide-react-native';
 import { SharedStackParamList } from '@navigation/NavigationTypes';
 import { RootState } from '@contexts/store';
+import IconComponent from '@mycomponents/LucidImage';
 
 type Props = NativeStackScreenProps<SharedStackParamList, 'Success'>;
 
@@ -24,7 +26,7 @@ export interface SuccessConfig {
    title?: string;
    description?: string;
    icon?: 'check' | 'award' | 'star' | 'heart' | 'zap' | 'custom';
-   customIcon?: React.ReactNode;
+   customIcon?: LucideIcon;
    variant?: 'default' | 'card' | 'celebration' | 'minimal';
    animation?: 'bounce' | 'scale' | 'slide' | 'fade' | 'confetti';
    buttonText?: string;
@@ -405,10 +407,7 @@ const SuccessScreen: React.FC<Props> = ({ navigation, route }) => {
    // Render icon based on type
    const renderIcon = () => {
       const iconSize = successConfig.variant === 'minimal' ? 48 : 80;
-      const iconColor =
-         successConfig.variant === 'card'
-            ? 'rgb(var(--color-app-button))'
-            : 'rgb(var(--color-app-button-text))';
+      const iconColor = successConfig.variant === 'card' ? 'text-appButton' : 'text-appButtonText';
 
       const rotateZ = iconRotation.interpolate({
          inputRange: [0, 1],
@@ -423,10 +422,18 @@ const SuccessScreen: React.FC<Props> = ({ navigation, route }) => {
       };
 
       if (successConfig.customIcon) {
-         return <Animated.View style={iconStyle}>{successConfig.customIcon}</Animated.View>;
+         return (
+            <Animated.View style={iconStyle}>
+               <IconComponent
+                  Icon={successConfig.customIcon}
+                  size={iconSize}
+                  className={iconColor}
+               />
+            </Animated.View>
+         );
       }
 
-      const IconComponent =
+      const Icon =
          {
             check: CheckCircle,
             award: Award,
@@ -437,7 +444,7 @@ const SuccessScreen: React.FC<Props> = ({ navigation, route }) => {
 
       return (
          <Animated.View style={iconStyle}>
-            <IconComponent size={iconSize} color={iconColor} strokeWidth={2} />
+            <IconComponent Icon={Icon} size={iconSize} className={iconColor} />
          </Animated.View>
       );
    };
@@ -538,12 +545,7 @@ const SuccessScreen: React.FC<Props> = ({ navigation, route }) => {
 
          {/* Main Content Container */}
          {successConfig.variant === 'card' ? (
-            <View
-               className="bg-appCardBackground border border-appBorderColor rounded-3xl p-8 w-full max-w-sm"
-               style={{
-                  shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                  elevation: 8,
-               }}>
+            <View className="shadow-md bg-appCardBackground border border-appBorderColor rounded-3xl p-8 w-full max-w-sm">
                {/* Icon */}
                <View className={getIconContainerClasses()}>{renderIcon()}</View>
 
@@ -655,14 +657,10 @@ const SuccessScreen: React.FC<Props> = ({ navigation, route }) => {
                            {isRedirecting ? 'Yönlendiriliyor...' : successConfig.buttonText}
                         </Text>
                         {!isRedirecting && (
-                           <ArrowRight
+                           <IconComponent
+                              Icon={ArrowRight}
                               size={20}
-                              color={
-                                 successConfig.variant === 'minimal' ||
-                                 (successConfig.variant as string) === 'card'
-                                    ? 'rgb(var(--color-app-button-text))'
-                                    : 'rgb(var(--color-app-button))'
-                              }
+                              className={`text-appButtonText`}
                            />
                         )}
                      </TouchableOpacity>

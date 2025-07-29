@@ -10,8 +10,7 @@ import {
 import React from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Text } from 'react-native-paper';
-import colors from 'tailwindcss/colors';
-import customColors from '@styles/tailwind.colors';
+import ImageComponent from '@mycomponents/Image';
 
 interface FullModalComponentProps {
    isOpen: boolean;
@@ -30,22 +29,16 @@ const FullModalComponent: React.FC<FullModalComponentProps> = ({
    ...rest
 }) => {
    return (
-      <Modal
-         visible={isOpen}
-         transparent
-         animationType="fade"
-         statusBarTranslucent
-         {...rest}
-         onRequestClose={onClose}>
+      <Modal visible={isOpen} transparent animationType="fade" {...rest} onRequestClose={onClose}>
          <SafeAreaView className={`flex-1 bg-appCardBackground ${style}`}>
             {/* Navbar */}
             <View className="w-full bg-appCardText flex-row items-center justify-between pt-8 mb-4 px-2">
                {/* Sol Close Button */}
                <TouchableOpacity onPress={onClose} className="w-12 h-12 mx-2">
-                  <Image
-                     style={{ tintColor: customColors.appError }}
-                     className="w-12 h-12"
+                  <ImageComponent
                      source={require('@assets/images/X.png')}
+                     className="w-12 h-12 text-appIcon"
+                     size="md"
                   />
                </TouchableOpacity>
 

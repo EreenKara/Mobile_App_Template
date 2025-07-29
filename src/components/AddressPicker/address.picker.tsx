@@ -5,6 +5,8 @@ import { MapPin, RefreshCw, AlertCircle } from 'lucide-react-native';
 import { useCityDistrict } from '@hooks/profile/useCityDistrict';
 import City from '@apptypes/entities/city';
 import District from '@apptypes/entities/district';
+import IconComponent from '@mycomponents/LucidImage';
+import { useTailwindColors } from '@styles/tailwind.colors';
 
 interface AddressPickerComponentProps {
    values: { city: string; district: string };
@@ -41,6 +43,7 @@ const AddressPickerComponent: React.FC<AddressPickerComponentProps> = ({
       district: 'İlçe Seçiniz',
    },
 }) => {
+   const colors = useTailwindColors();
    // useCityDistrict hook'unu kullan
    const {
       cities,
@@ -175,7 +178,7 @@ const AddressPickerComponent: React.FC<AddressPickerComponentProps> = ({
    const ErrorComponent = ({ error, onRetry }: { error: any; onRetry: () => void }) => (
       <View className="flex-row items-center justify-between p-3 bg-appError/10 rounded-lg">
          <View className="flex-row items-center flex-1">
-            <AlertCircle size={16} color="rgb(var(--color-app-error))" strokeWidth={2} />
+            <IconComponent Icon={AlertCircle} className="text-appError" size={16} />
             <Text className="text-appError font-appFont text-sm ml-2 flex-1">
                Veriler yüklenirken hata oluştu
             </Text>
@@ -192,12 +195,7 @@ const AddressPickerComponent: React.FC<AddressPickerComponentProps> = ({
    // Loading indicator
    const LoadingIndicator = () => (
       <View className="flex-row items-center justify-center p-3">
-         <RefreshCw
-            size={16}
-            color="rgb(var(--color-app-icon))"
-            strokeWidth={2}
-            className="animate-spin"
-         />
+         <IconComponent Icon={RefreshCw} className="text-appIcon" size={16} />
          <Text className="text-appIcon font-appFont text-sm ml-2">Yükleniyor...</Text>
       </View>
    );
@@ -210,27 +208,17 @@ const AddressPickerComponent: React.FC<AddressPickerComponentProps> = ({
       ${currentVariant.container}
       ${disabled ? 'opacity-50' : ''}
       ${className}
-    `}
-         style={
-            variant === 'compact' || variant === 'card'
-               ? {
-                    shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                    elevation: 2,
-                    borderWidth: 1,
-                    borderColor: 'rgb(var(--color-app-border))',
-                 }
-               : undefined
-         }>
+      ${variant === 'compact' || variant === 'card' ? 'border border-appBorderColor shadow-md' : ''}
+    `}>
          {/* City Picker */}
          <View className="flex-col">
             {showLabels && (
                <View className="flex-row items-center mb-2">
                   {showIcons && (
-                     <MapPin
+                     <IconComponent
+                        Icon={MapPin}
+                        className="text-appIcon mr-2"
                         size={currentSize.iconSize}
-                        color="rgb(var(--color-app-icon))"
-                        strokeWidth={2}
-                        className="mr-2"
                      />
                   )}
                   <Text
@@ -252,21 +240,18 @@ const AddressPickerComponent: React.FC<AddressPickerComponentProps> = ({
                   className={`
             ${currentVariant.picker}
             ${currentSize.picker}
-          `}
-                  style={{
-                     shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                     elevation: 1,
-                  }}>
+            shadow-md
+          `}>
                   <Picker
                      selectedValue={values.city}
                      onValueChange={handleCityChange}
                      enabled={!disabled && hasCities}
-                     style={{ color: 'rgb(var(--color-app-text))' }}
-                     dropdownIconColor="rgb(var(--color-app-icon))">
+                     className="text-appText"
+                     dropdownIconColor={colors.appIcon}>
                      <Picker.Item
                         label={placeholder.city || 'Şehir Seçiniz'}
                         value=""
-                        color="rgb(var(--color-app-placeholder))"
+                        color={colors.appPlaceholder}
                      />
 
                      {cities.map(city => (
@@ -274,7 +259,7 @@ const AddressPickerComponent: React.FC<AddressPickerComponentProps> = ({
                            key={city.id}
                            label={city.name}
                            value={city.id}
-                           color="rgb(var(--color-app-text))"
+                           color={colors.appText}
                         />
                      ))}
                   </Picker>
@@ -287,11 +272,10 @@ const AddressPickerComponent: React.FC<AddressPickerComponentProps> = ({
             {showLabels && (
                <View className="flex-row items-center mb-2">
                   {showIcons && (
-                     <MapPin
+                     <IconComponent
+                        Icon={MapPin}
+                        className="text-appIcon mr-2"
                         size={currentSize.iconSize}
-                        color="rgb(var(--color-app-icon))"
-                        strokeWidth={2}
-                        className="mr-2"
                      />
                   )}
                   <Text
@@ -314,21 +298,17 @@ const AddressPickerComponent: React.FC<AddressPickerComponentProps> = ({
             ${currentVariant.picker}
             ${currentSize.picker}
             ${!values.city || !hasDistricts ? 'opacity-50' : ''}
-          `}
-                  style={{
-                     shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                     elevation: 1,
-                  }}>
+          `}>
                   <Picker
                      selectedValue={values.district}
                      onValueChange={handleDistrictChange}
                      enabled={!disabled && !!values.city && hasDistricts}
-                     style={{ color: 'rgb(var(--color-app-text))' }}
-                     dropdownIconColor="rgb(var(--color-app-icon))">
+                     className="text-appText"
+                     dropdownIconColor={colors.appIcon}>
                      <Picker.Item
                         label={placeholder.district || 'İlçe Seçiniz'}
                         value=""
-                        color="rgb(var(--color-app-placeholder))"
+                        color={colors.appPlaceholder}
                      />
 
                      {districts.map(district => (
@@ -336,7 +316,7 @@ const AddressPickerComponent: React.FC<AddressPickerComponentProps> = ({
                            key={district.id}
                            label={district.name}
                            value={district.id}
-                           color="rgb(var(--color-app-text))"
+                           color={colors.appText}
                         />
                      ))}
                   </Picker>

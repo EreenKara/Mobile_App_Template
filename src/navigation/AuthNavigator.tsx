@@ -8,11 +8,12 @@ import { RegisterScreen } from '@screens/auth/index';
 import { ForgotPasswordScreen } from '@screens/auth/index';
 import EmailConfirmScreen from '@screens/auth/EmailConfirm';
 import DenemeScreen from '@screens/auth/Deneme';
-import customColors, { defaultColors } from '@styles/tailwind.colors';
+import useTailwindColors from '@styles/tailwind.colors';
 import ResetPasswordScreen from '@screens/auth/ResetPassword';
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 const AuthNavigator: React.FC = () => {
+   const tailwindColors = useTailwindColors();
    // Responsive header title styles based on platform and screen size
    const getHeaderTitleStyle = () => ({
       fontFamily: 'Inter-Regular', // appFont
@@ -21,15 +22,15 @@ const AuthNavigator: React.FC = () => {
          ios: 17,
          android: 20,
       }),
-      color: customColors.appText, // appText color
+      color: tailwindColors.appText, // appText color
    });
 
    // Common screen options with Tailwind colors
    const commonScreenOptions = {
       headerStyle: {
-         backgroundColor: customColors.appTransition, // appTransition color from tailwind.config.js
+         backgroundColor: tailwindColors.appTransition, // appTransition color from tailwind.config.js
       },
-      headerTintColor: customColors.appIcon, // appText color
+      headerTintColor: tailwindColors.appIcon, // appText color
       headerTitleStyle: getHeaderTitleStyle(),
       headerShadowVisible: false,
       headerShown: true,
@@ -65,9 +66,9 @@ const AuthNavigator: React.FC = () => {
                title: 'Kayıt Ol',
                headerShown: false,
                // Custom back button styling
-               headerTintColor: customColors.appIcon, // appButton color
+               headerTintColor: tailwindColors.appIcon, // appButton color
                headerStyle: {
-                  backgroundColor: customColors.appTransition, // appTransition
+                  backgroundColor: tailwindColors.appTransition, // appTransition
                },
                // Responsive title positioning
                headerTitleAlign: Platform.select({
@@ -87,7 +88,7 @@ const AuthNavigator: React.FC = () => {
                headerShown: true,
                // Modal specific styling
                headerStyle: {
-                  backgroundColor: customColors.appBackground, // appBackground for modals
+                  backgroundColor: tailwindColors.appBackground, // appBackground for modals
                },
                headerTitleStyle: {
                   ...getHeaderTitleStyle(),
@@ -112,12 +113,12 @@ const AuthNavigator: React.FC = () => {
                headerShown: true,
                // Success/confirmation styling
                headerStyle: {
-                  backgroundColor: customColors.appBackground, // appBackground
+                  backgroundColor: tailwindColors.appBackground, // appBackground
                },
-               headerTintColor: customColors.appIcon, // appButton
+               headerTintColor: tailwindColors.appIcon, // appButton
                headerTitleStyle: {
                   ...getHeaderTitleStyle(),
-                  color: customColors.appButton, // appButton color for confirmation
+                  color: tailwindColors.appButton, // appButton color for confirmation
                },
                // Prevent dismissal by swipe for important screens
                gestureEnabled: false,
@@ -134,12 +135,12 @@ const AuthNavigator: React.FC = () => {
                headerShown: true,
                // Success/confirmation styling
                headerStyle: {
-                  backgroundColor: customColors.appBackground, // appBackground
+                  backgroundColor: tailwindColors.appBackground, // appBackground
                },
-               headerTintColor: customColors.appIcon, // appButton
+               headerTintColor: tailwindColors.appIcon, // appButton
                headerTitleStyle: {
                   ...getHeaderTitleStyle(),
-                  color: customColors.appButton, // appButton color for confirmation
+                  color: tailwindColors.appButton, // appButton color for confirmation
                },
                // Prevent dismissal by swipe for important screens
                gestureEnabled: false,
@@ -157,11 +158,11 @@ const AuthNavigator: React.FC = () => {
                headerShown: true,
                // Development/test styling
                headerStyle: {
-                  backgroundColor: customColors.appTransition, // appTransition
+                  backgroundColor: tailwindColors.appTransition, // appTransition
                },
                headerTitleStyle: {
                   ...getHeaderTitleStyle(),
-                  color: customColors.appIcon, // appIcon color for test screens
+                  color: tailwindColors.appIcon, // appIcon color for test screens
                },
                animation: 'fade_from_bottom',
             }}

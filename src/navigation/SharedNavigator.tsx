@@ -9,13 +9,13 @@ import { HomeStackParamList, SharedStackParamList } from './NavigationTypes';
 import NavBarTitle from '@screens/shared/navbarTitle';
 import ErrorScreen from '@screens/shared/Error/error.screen';
 import SuccessScreen from '@screens/shared/Success/success.screen';
-import customColors from '@styles/tailwind.colors';
+import useTailwindColors from '@styles/tailwind.colors';
 
 const Stack = createNativeStackNavigator<SharedStackParamList>();
 
 const SharedNavigator: React.FC = () => {
    const homeNavigation = useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
-
+   const tailwindColors = useTailwindColors();
    // Enhanced header title styling with responsive design
    const getHeaderTitleStyle = () => ({
       fontFamily: 'Inter-Regular',
@@ -24,7 +24,7 @@ const SharedNavigator: React.FC = () => {
          ios: 17,
          android: 20,
       }),
-      color: customColors.appText,
+      color: tailwindColors.appText,
       letterSpacing: Platform.select({
          ios: -0.24,
          android: 0,
@@ -33,9 +33,9 @@ const SharedNavigator: React.FC = () => {
 
    // Enhanced header styling with elevation and shadows
    const getHeaderStyle = () => ({
-      backgroundColor: customColors.appBar,
+      backgroundColor: tailwindColors.appBar,
       elevation: 4, // Android shadow
-      shadowColor: customColors.appTransparentColor, // iOS shadow
+      shadowColor: tailwindColors.appTransparentColor, // iOS shadow
       shadowOffset: {
          width: 0,
          height: 2,
@@ -51,7 +51,7 @@ const SharedNavigator: React.FC = () => {
       headerTitleAlign: 'center' as const,
       headerStyle: getHeaderStyle(),
       headerTitleStyle: getHeaderTitleStyle(),
-      headerTintColor: customColors.appButton,
+      headerTintColor: tailwindColors.appButton,
 
       // Enhanced back button styling
       headerBackTitleVisible: false,
@@ -67,8 +67,7 @@ const SharedNavigator: React.FC = () => {
 
       // Status bar configuration
       statusBarStyle: 'dark' as const,
-      statusBarBackgroundColor: customColors.appBar,
-      statusBarTranslucent: false,
+      statusBarBackgroundColor: tailwindColors.appBar,
    };
 
    return (
@@ -90,15 +89,15 @@ const SharedNavigator: React.FC = () => {
                // Custom styling for error screens
                headerStyle: {
                   ...getHeaderStyle(),
-                  backgroundColor: customColors.appError,
+                  backgroundColor: tailwindColors.appError,
                },
 
                headerTitleStyle: {
                   ...getHeaderTitleStyle(),
-                  color: customColors.appButtonText,
+                  color: tailwindColors.appButtonText,
                },
 
-               headerTintColor: customColors.appButtonText,
+               headerTintColor: tailwindColors.appButtonText,
 
                // Error screen animations
                animation: 'slide_from_bottom',
@@ -109,7 +108,7 @@ const SharedNavigator: React.FC = () => {
 
                // Status bar for error
                statusBarStyle: 'light' as const,
-               statusBarBackgroundColor: customColors.appError,
+               statusBarBackgroundColor: tailwindColors.appError,
             }}
          />
 
@@ -127,15 +126,15 @@ const SharedNavigator: React.FC = () => {
                // Custom styling for success screens
                headerStyle: {
                   ...getHeaderStyle(),
-                  backgroundColor: customColors.appButton,
+                  backgroundColor: tailwindColors.appButton,
                },
 
                headerTitleStyle: {
                   ...getHeaderTitleStyle(),
-                  color: customColors.appButtonText,
+                  color: tailwindColors.appButtonText,
                },
 
-               headerTintColor: customColors.appButtonText,
+               headerTintColor: tailwindColors.appButtonText,
 
                // Success screen animations
                animation: 'slide_from_right',
@@ -146,7 +145,7 @@ const SharedNavigator: React.FC = () => {
 
                // Status bar for success
                statusBarStyle: 'light' as const,
-               statusBarBackgroundColor: customColors.appButton,
+               statusBarBackgroundColor: tailwindColors.appButton,
 
                // Optional: Auto-hide after delay
                headerShadowVisible: true,

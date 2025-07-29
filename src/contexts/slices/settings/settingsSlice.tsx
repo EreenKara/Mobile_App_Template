@@ -1,13 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { colorScheme } from 'nativewind';
 
 interface SettingsState {
-   darkMode: boolean;
+   darkMode: 'dark' | 'light';
    language: string;
 }
 
 const initialState: SettingsState = {
-   darkMode: false,
+   darkMode: 'light',
    language: 'tr',
 };
 
@@ -16,24 +15,18 @@ const settingsSlice = createSlice({
    initialState,
    reducers: {
       toggleDarkMode(state) {
-         state.darkMode = !state.darkMode;
-         // 🎯 Direkt NativeWind'i manipüle et
-         colorScheme.set(state.darkMode ? 'dark' : 'light');
+         state.darkMode = state.darkMode === 'dark' ? 'light' : 'dark';
+         // ❌ Burada colorScheme.set() çağırma
       },
-      setDarkMode(state, action: PayloadAction<boolean>) {
+      setDarkMode(state, action: PayloadAction<'dark' | 'light'>) {
          state.darkMode = action.payload;
-         // 🎯 NativeWind'i sync'le
-         colorScheme.set(state.darkMode ? 'dark' : 'light');
+         // ❌ Burada colorScheme.set() çağırma
       },
       setLanguage(state, action: PayloadAction<string>) {
          state.language = action.payload;
       },
-      // 🆕 Initialize theme - App başlangıcında kullanmak için
-      initializeTheme(state) {
-         colorScheme.set(state.darkMode ? 'dark' : 'light');
-      },
    },
 });
 
-export const { toggleDarkMode, setDarkMode, setLanguage, initializeTheme } = settingsSlice.actions;
+export const { toggleDarkMode, setDarkMode, setLanguage } = settingsSlice.actions;
 export default settingsSlice.reducer;

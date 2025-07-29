@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Text, View, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import TextInputComponent from '@mycomponents/TextInput/text.input';
 import { useDebounce } from '@hooks/modular/useDebounce';
 

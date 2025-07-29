@@ -8,12 +8,13 @@ import {
    TouchableOpacity,
    StyleProp,
    ViewStyle,
-   ActivityIndicator,
    Alert,
 } from 'react-native';
 import { Camera, Image as ImageIcon, RefreshCw, X, AlertCircle } from 'lucide-react-native';
 import { useCamera, ImageResult } from '@hooks/common/useCamera';
-
+import LoadingComponent from '@mycomponents/Loading/laoading';
+import { useTailwindColors } from '@styles/tailwind.colors';
+import IconComponent from '@mycomponents/LucidImage';
 export interface ImagePickerComponentProps {
    image: ImageResult | null;
    onImageSelected: (image: ImageResult) => void;
@@ -231,11 +232,7 @@ const ImagePickerComponent: React.FC<ImagePickerComponentProps> = ({
                   />
                ) : (
                   <View className="w-full h-full items-center justify-center">
-                     <Camera
-                        size={currentSize.iconSize * 2}
-                        color="rgb(var(--color-app-icon))"
-                        strokeWidth={1.5}
-                     />
+                     <IconComponent Icon={Camera} size={currentSize.iconSize * 2} />
                   </View>
                )}
 
@@ -248,17 +245,10 @@ const ImagePickerComponent: React.FC<ImagePickerComponentProps> = ({
                   `}>
                      <View className={`items-center ${currentSize.padding}`}>
                         {loading ? (
-                           <ActivityIndicator
-                              size="small"
-                              color="rgb(var(--color-app-button-text))"
-                           />
+                           <LoadingComponent size="sm" variant="spinner" />
                         ) : (
                            <>
-                              <ImageIcon
-                                 size={currentSize.iconSize}
-                                 color="rgb(var(--color-app-button-text))"
-                                 strokeWidth={2}
-                              />
+                              <IconComponent Icon={ImageIcon} size={currentSize.iconSize} />
                               <Text
                                  className={`
                                  ${currentSize.text} 
@@ -284,17 +274,9 @@ const ImagePickerComponent: React.FC<ImagePickerComponentProps> = ({
                   {showEditButton && (
                      <TouchableOpacity
                         onPress={handlePress}
-                        className="w-8 h-8 rounded-full bg-appButton items-center justify-center"
-                        style={{
-                           shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                           elevation: 4,
-                        }}
+                        className="shadow-md w-8 h-8 rounded-full bg-appButton items-center justify-center"
                         activeOpacity={0.8}>
-                        <RefreshCw
-                           size={14}
-                           color="rgb(var(--color-app-button-text))"
-                           strokeWidth={2}
-                        />
+                        <IconComponent Icon={RefreshCw} size={14} />
                      </TouchableOpacity>
                   )}
 
@@ -302,13 +284,9 @@ const ImagePickerComponent: React.FC<ImagePickerComponentProps> = ({
                   {showRemoveButton && (
                      <TouchableOpacity
                         onPress={handleRemoveImage}
-                        className="w-8 h-8 rounded-full bg-appError items-center justify-center"
-                        style={{
-                           shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                           elevation: 4,
-                        }}
+                        className="shadow-md w-8 h-8 rounded-full bg-appError items-center justify-center"
                         activeOpacity={0.8}>
-                        <X size={14} color="white" strokeWidth={2} />
+                        <IconComponent Icon={X} size={14} />
                      </TouchableOpacity>
                   )}
                </View>
@@ -318,7 +296,7 @@ const ImagePickerComponent: React.FC<ImagePickerComponentProps> = ({
          {/* Error Message */}
          {(error || errorMessage) && (
             <View className="flex-row items-center mt-2 px-2">
-               <AlertCircle size={14} color="rgb(var(--color-app-error))" strokeWidth={2} />
+               <IconComponent Icon={AlertCircle} size={14} className="text-appError" />
                <Text className="text-appError font-appFont text-sm ml-1">
                   {error || errorMessage}
                </Text>

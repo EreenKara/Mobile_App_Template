@@ -12,12 +12,11 @@ import LoadingComponent from '@mycomponents/Loading/laoading';
 import { useRegister } from '@hooks/auth/useRegister';
 import { RegisterCredentials } from '@apptypes/index';
 import { registerValidationSchema } from '@utility/validations';
-import customColors from '@styles/tailwind.colors';
+import ImageComponent from '@mycomponents/Image';
 type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 
 const RegisterScreen: React.FC<Props> = ({ navigation }) => {
    const lastEmailRef = useRef<string>('');
-
    const {
       loading,
       error,
@@ -88,10 +87,9 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
          <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
             {/* Logo Container */}
             <View className="items-center mt-8 mb-8">
-               <Image
+               <ImageComponent
                   source={require('@assets/images/nav_logo.png')}
-                  className="w-32 h-32 mb-4"
-                  style={{ tintColor: customColors.appIcon }}
+                  className="w-32 h-32 mb-4 text-appIcon"
                />
                <Text className="text-2xl font-bold text-appText">Hesap Oluştur</Text>
             </View>

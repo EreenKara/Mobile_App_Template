@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 import SearchBarComponent from '@mycomponents/SearchBar/search.bar';
-import customColors from '@styles/tailwind.colors';
 import FullModalComponent from '@mycomponents/Modal/FullModal/full.modal';
+import ImageComponent from '@mycomponents/Image';
 interface SearchBarModalComponentProps {
    handleSearch: () => void;
    title?: string;
@@ -27,7 +27,6 @@ const SearchBarModalComponent: React.FC<SearchBarModalComponentProps> = ({
    setIsOpened,
 }) => {
    const [isOpen, setIsOpen] = useState<boolean>(false);
-
    const Open = useCallback(() => {
       if (isOpened !== undefined) {
          setIsOpened?.(true);
@@ -53,10 +52,9 @@ const SearchBarModalComponent: React.FC<SearchBarModalComponentProps> = ({
             <Text className="text-base pr-2 text-foreground" style={iconTitleStyle}>
                {title}
             </Text>
-            <Image
+            <ImageComponent
                source={require('@assets/images/search-icon.png')}
-               className="w-5 h-5"
-               style={{ tintColor: customColors?.appIcon }} // Tailwind text-gray-500
+               className="w-5 h-5 text-appIcon"
             />
          </TouchableOpacity>
 

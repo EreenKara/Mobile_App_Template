@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Image, Text, Platform } from 'react-native';
-import customColors from '@styles/tailwind.colors';
+import { View, Image as RNImage, Text, Platform } from 'react-native';
+import { cssInterop } from 'nativewind';
+import ImageComponent from '@mycomponents/Image';
 
 interface NavBarTitleProps {
    variant?: 'logo';
@@ -50,16 +51,15 @@ const NavBarTitle: React.FC<NavBarTitleProps> = ({
    // Logo variant - Enhanced with responsive design
    if (variant === 'logo') {
       return (
-         <View className="flex-row items-center justify-center">
-            <Image
+         <View className="flex-row items-center justify-center bg-appBackground">
+            <ImageComponent
                source={require('@assets/images/nav_logo.png')}
+               className="mb-1 text-appIcon"
                style={{
-                  tintColor: customColors.appIcon,
                   height: sizing.height,
                   width: sizing.width,
                   resizeMode: 'contain',
                }}
-               className="mb-1"
             />
             {showSubtitle && subtitle && (
                <View className="ml-2">
@@ -76,15 +76,14 @@ const NavBarTitle: React.FC<NavBarTitleProps> = ({
 
    // Fallback to logo
    return (
-      <Image
+      <ImageComponent
          source={require('@assets/images/nav_logo.png')}
          style={{
-            tintColor: customColors.appIcon,
             height: sizing.height,
             width: sizing.width,
             resizeMode: 'contain',
          }}
-         className="mb-1"
+         className="mb-1 text-appIcon"
       />
    );
 };

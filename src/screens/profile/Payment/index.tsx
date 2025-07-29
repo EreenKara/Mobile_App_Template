@@ -29,6 +29,7 @@ import { RootState } from '@contexts/store';
 import ButtonComponent from '@mycomponents/Button/Button';
 import LoadingComponent from '@mycomponents/Loading/laoading';
 import { useAsync } from '@hooks/modular/useAsync';
+import IconComponent from '@mycomponents/LucidImage';
 
 // Types
 type ScreenProps = NativeStackScreenProps<ProfileStackParamList, 'Payment'>;
@@ -197,7 +198,7 @@ const PaymentScreen: React.FC<ScreenProps> = ({ navigation }) => {
    const renderEmptyState = () => (
       <View className="flex-1 items-center justify-center p-8">
          <View className="w-24 h-24 bg-appButton/10 rounded-full items-center justify-center mb-6">
-            <Wallet size={48} color="rgb(var(--color-app-button))" />
+            <IconComponent Icon={Wallet} size={48} className="text-appButton" />
          </View>
          <Text className="text-appText font-bold text-xl mb-2">Kayıtlı Kart Yok</Text>
          <Text className="text-appText/60 text-center mb-6">
@@ -208,7 +209,7 @@ const PaymentScreen: React.FC<ScreenProps> = ({ navigation }) => {
             onPress={handleAddCard}
             className="bg-appButton px-6 py-3 rounded-lg flex-row items-center"
             activeOpacity={0.7}>
-            <Plus size={20} color="rgb(var(--color-app-button-text))" />
+            <IconComponent Icon={Plus} size={20} className="text-appButtonText" />
             <Text className="text-appButtonText font-medium ml-2">İlk Kartı Ekle</Text>
          </TouchableOpacity>
       </View>
@@ -253,7 +254,11 @@ const PaymentScreen: React.FC<ScreenProps> = ({ navigation }) => {
                         isSelected ? 'border-appButton bg-appButton' : 'border-appBorderColor'
                      }`}>
                      {isSelected && (
-                        <CheckCircle size={16} color="rgb(var(--color-app-button-text))" />
+                        <IconComponent
+                           Icon={CheckCircle}
+                           size={16}
+                           className="text-appButtonText"
+                        />
                      )}
                   </View>
                </View>
@@ -262,7 +267,7 @@ const PaymentScreen: React.FC<ScreenProps> = ({ navigation }) => {
             {/* Card Actions */}
             <View className="flex-row items-center justify-between pt-3 border-t border-appBorderColor/30">
                <View className="flex-row items-center">
-                  <Shield size={16} color="rgb(var(--color-app-success))" />
+                  <IconComponent Icon={Shield} size={16} className="text-appSuccess" />
                   <Text className="text-appSuccess text-sm ml-1">Güvenli</Text>
                </View>
 
@@ -277,11 +282,11 @@ const PaymentScreen: React.FC<ScreenProps> = ({ navigation }) => {
                   )}
 
                   <TouchableOpacity onPress={() => handleEditCard(card)} activeOpacity={0.7}>
-                     <Edit3 size={16} color="rgb(var(--color-app-icon))" />
+                     <IconComponent Icon={Edit3} size={16} className="text-appIcon" />
                   </TouchableOpacity>
 
                   <TouchableOpacity onPress={() => handleDeleteCard(card)} activeOpacity={0.7}>
-                     <Trash2 size={16} color="rgb(var(--color-app-error))" />
+                     <IconComponent Icon={Trash2} size={16} className="text-appError" />
                   </TouchableOpacity>
                </View>
             </View>
@@ -293,7 +298,7 @@ const PaymentScreen: React.FC<ScreenProps> = ({ navigation }) => {
       <View className="p-6 bg-appCardBackground border-b border-appBorderColor">
          <View className="flex-row items-center mb-4">
             <View className="w-12 h-12 bg-appButton/10 rounded-full items-center justify-center mr-4">
-               <CreditCard size={24} color="rgb(var(--color-app-button))" />
+               <IconComponent Icon={CreditCard} size={24} className="text-appButton" />
             </View>
             <View>
                <Text className="text-appText font-bold text-xl">Ödeme Yöntemleri</Text>
@@ -336,7 +341,7 @@ const PaymentScreen: React.FC<ScreenProps> = ({ navigation }) => {
    if (cardsError && paymentCards.length === 0) {
       return (
          <View className="flex-1 bg-appBackground items-center justify-center p-6">
-            <AlertCircle size={48} color="rgb(var(--color-app-error))" />
+            <IconComponent Icon={AlertCircle} size={48} className="text-appError" />
             <Text className="text-appError text-center text-lg mb-4 mt-4">
                Ödeme kartları yüklenirken bir hata oluştu.
             </Text>
@@ -361,7 +366,7 @@ const PaymentScreen: React.FC<ScreenProps> = ({ navigation }) => {
                <RefreshControl
                   refreshing={cardsLoading}
                   onRefresh={handleRefresh}
-                  tintColor="rgb(var(--color-app-button))"
+                  className="text-appButton"
                />
             }>
             {/* Header */}
@@ -386,7 +391,7 @@ const PaymentScreen: React.FC<ScreenProps> = ({ navigation }) => {
                         onPress={handleAddCard}
                         className="bg-appButton/10 border-2 border-dashed border-appButton p-4 rounded-xl items-center justify-center mb-6"
                         activeOpacity={0.7}>
-                        <Plus size={32} color="rgb(var(--color-app-button))" />
+                        <IconComponent Icon={Plus} size={32} className="text-appButton" />
                         <Text className="text-appButton font-medium text-lg mt-2">
                            Yeni Kart Ekle
                         </Text>

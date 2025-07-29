@@ -8,11 +8,12 @@ import { HomeStackParamList } from './NavigationTypes';
 import { HomeScreen } from '@screens/home/index';
 import NavBarTitle from '@screens/shared/navbarTitle';
 import SharedNavigator from './SharedNavigator';
-import customColors from '@styles/tailwind.colors';
+import useTailwindColors from '@styles/tailwind.colors';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
 const HomeNavigator: React.FC = () => {
+   const tailwindColors = useTailwindColors();
    // Enhanced header title styling with responsive design
    const getHeaderTitleStyle = () => ({
       fontFamily: 'Inter-Regular',
@@ -21,7 +22,7 @@ const HomeNavigator: React.FC = () => {
          ios: 17,
          android: 20,
       }),
-      color: customColors.appText,
+      color: tailwindColors.appIcon,
       letterSpacing: Platform.select({
          ios: -0.24,
          android: 0,
@@ -30,9 +31,9 @@ const HomeNavigator: React.FC = () => {
 
    // Enhanced header styling with elevation and shadows
    const getHeaderStyle = () => ({
-      backgroundColor: customColors.appBar,
+      backgroundColor: tailwindColors.appTransition,
       elevation: 4, // Android shadow
-      shadowColor: customColors.appShadow, // iOS shadow
+      shadowColor: tailwindColors.appTransition, // iOS shadow
       shadowOffset: {
          width: 0,
          height: 2,
@@ -47,7 +48,7 @@ const HomeNavigator: React.FC = () => {
       headerTitleAlign: 'center' as const,
       headerStyle: getHeaderStyle(),
       headerTitleStyle: getHeaderTitleStyle(),
-      headerTintColor: customColors.appButton,
+      headerTintColor: tailwindColors.appIcon,
 
       // Enhanced back button styling
       headerBackTitleVisible: false,
@@ -67,8 +68,7 @@ const HomeNavigator: React.FC = () => {
 
       // Status bar configuration
       statusBarStyle: 'dark' as const,
-      statusBarBackgroundColor: customColors.appBar,
-      statusBarTranslucent: false,
+      statusBarBackgroundColor: tailwindColors.appBar,
    };
 
    return (
@@ -115,7 +115,7 @@ const HomeNavigator: React.FC = () => {
                // Custom styling for shared screens
                headerStyle: {
                   ...getHeaderStyle(),
-                  backgroundColor: customColors.appTransition,
+                  backgroundColor: tailwindColors.appBackground,
                },
 
                // Enhanced back button for shared screens

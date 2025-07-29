@@ -4,7 +4,6 @@ import { Snackbar } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '@contexts/store';
 import { dismissNotification, nextNotification } from './notificationSlice';
-import customColors from '@styles/tailwind.colors';
 
 export const NotificationContainer = () => {
    const dispatch = useDispatch<AppDispatch>();
@@ -25,6 +24,7 @@ export const NotificationContainer = () => {
    return (
       <Snackbar
          visible={visible}
+         className="bg-appButton"
          onDismiss={handleDismiss}
          duration={current.duration ?? 3000}
          action={
@@ -37,8 +37,7 @@ export const NotificationContainer = () => {
                     },
                  }
                : undefined
-         }
-         style={{ backgroundColor: customColors?.appButton }}>
+         }>
          {current.message}
       </Snackbar>
    );

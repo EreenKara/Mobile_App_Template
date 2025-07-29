@@ -49,13 +49,7 @@ const CenteredModalComponent: React.FC<CenteredModalComponentProps> = ({
    );
 
    return (
-      <Modal
-         visible={isOpen}
-         transparent
-         animationType="fade"
-         statusBarTranslucent
-         {...rest}
-         onRequestClose={onClose}>
+      <Modal visible={isOpen} transparent animationType="fade" {...rest} onRequestClose={onClose}>
          {content}
       </Modal>
    );

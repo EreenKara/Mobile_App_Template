@@ -1,9 +1,10 @@
 // components/ExtendedListPicker/ExtendedListPicker.tsx
 import React, { useRef, useCallback, useMemo, useState } from 'react';
 import { FlatList, View, Text, TouchableOpacity, TextInput, ListRenderItem } from 'react-native';
-import { Search, Check, Plus, Users, X, ChevronRight, Filter } from 'lucide-react-native';
 import ExtendedPickerComponent, { ExtendedPickerRef } from '@components/ExtendedPicker/index';
-
+import IconComponent from '@mycomponents/LucidImage';
+import { Search, Check, Plus, Users, X, ChevronRight, Filter } from 'lucide-react-native';
+import { useTailwindColors } from '@styles/tailwind.colors';
 // Generic type for list items
 interface ListItem {
    id: string | number;
@@ -106,7 +107,7 @@ const ExtendedListPickerComponent = <T extends ListItem>({
 }: ExtendedListPickerComponentProps<T>) => {
    const pickerRef = useRef<ExtendedPickerRef>(null);
    const [searchText, setSearchText] = useState('');
-
+   const colors = useTailwindColors();
    // Size configurations for internal components
    const sizeConfig = {
       small: {
@@ -249,9 +250,7 @@ const ExtendedListPickerComponent = <T extends ListItem>({
    // Render default icon
    const renderDefaultIcon = useCallback(() => {
       if (icon) return icon;
-      return (
-         <Users size={currentSize.iconSize} color="rgb(var(--color-app-icon))" strokeWidth={2} />
-      );
+      return <IconComponent Icon={Users} className="text-appIcon" size={currentSize.iconSize} />;
    }, [icon, currentSize.iconSize]);
 
    // Render item icon
@@ -266,10 +265,10 @@ const ExtendedListPickerComponent = <T extends ListItem>({
          if (itemIcon) return itemIcon;
 
          return (
-            <Users
+            <IconComponent
+               Icon={Users}
+               className={isSelected ? 'text-appButton' : 'text-appIcon'}
                size={currentSize.iconSize}
-               color={isSelected ? 'rgb(var(--color-app-button))' : 'rgb(var(--color-app-icon))'}
-               strokeWidth={2}
             />
          );
       },
@@ -285,22 +284,16 @@ const ExtendedListPickerComponent = <T extends ListItem>({
 
          if (selectionMode === 'none') {
             return (
-               <ChevronRight
+               <IconComponent
+                  Icon={ChevronRight}
+                  className="text-appIcon"
                   size={currentSize.iconSize}
-                  color="rgb(var(--color-app-icon))"
-                  strokeWidth={2}
                />
             );
          }
 
-         const IconComponent = isSelected ? Check : Plus;
-         return (
-            <IconComponent
-               size={currentSize.iconSize}
-               color={isSelected ? 'rgb(var(--color-app-button))' : 'rgb(var(--color-app-icon))'}
-               strokeWidth={2}
-            />
-         );
+         const Icon = isSelected ? Check : Plus;
+         return <IconComponent Icon={Icon} size={currentSize.iconSize} />;
       },
       [getItemRightContent, selectionMode, currentSize.iconSize],
    );
@@ -315,7 +308,7 @@ const ExtendedListPickerComponent = <T extends ListItem>({
                value={searchText}
                onChangeText={handleSearch}
                placeholder={searchPlaceholder}
-               placeholderTextColor="rgb(var(--color-app-placeholder))"
+               placeholderTextColor={colors.appPlaceholder}
                className={`
             bg-appTransition border border-appBorderColor
             ${currentSize.searchInput}
@@ -327,17 +320,13 @@ const ExtendedListPickerComponent = <T extends ListItem>({
             <View className="absolute right-3 top-1/2 -translate-y-1/2 flex-row items-center">
                {searchText ? (
                   <TouchableOpacity onPress={clearSearch} className="p-1">
-                     <X
-                        size={currentSize.iconSize}
-                        color="rgb(var(--color-app-icon))"
-                        strokeWidth={2}
-                     />
+                     <IconComponent Icon={X} className="text-appIcon" size={currentSize.iconSize} />
                   </TouchableOpacity>
                ) : (
-                  <Search
+                  <IconComponent
+                     Icon={Search}
+                     className="text-appIcon"
                      size={currentSize.iconSize}
-                     color="rgb(var(--color-app-icon))"
-                     strokeWidth={2}
                   />
                )}
             </View>
@@ -415,12 +404,7 @@ const ExtendedListPickerComponent = <T extends ListItem>({
    // Render empty state
    const renderEmptyState = () => (
       <View className="items-center justify-center py-8">
-         <Filter
-            size={48}
-            color="rgb(var(--color-app-placeholder))"
-            strokeWidth={1}
-            className="mb-3"
-         />
+         <IconComponent Icon={Filter} className="text-appIcon" size={48} />
          <Text className="text-appPlaceholder font-appFont text-base text-center">
             {searchText ? `"${searchText}" için sonuç bulunamadı` : emptyText}
          </Text>

@@ -1,14 +1,5 @@
 import React, { useCallback } from 'react';
-import {
-   View,
-   Text,
-   ScrollView,
-   TouchableOpacity,
-   Linking,
-   Alert,
-   Image,
-   Share,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert, Image } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
 import { ProfileStackParamList } from '@navigation/NavigationTypes';
@@ -24,8 +15,7 @@ import {
    Users,
    Award,
    Coffee,
-   Github,
-   Twitter,
+   GitGraphIcon,
    Mail,
    Share2,
    Smartphone,
@@ -34,6 +24,8 @@ import {
    CheckCircle,
    ChevronRight,
 } from 'lucide-react-native';
+import ImageComponent from '@mycomponents/Image';
+import IconComponent from '@mycomponents/LucidImage';
 
 type ScreenProps = NativeStackScreenProps<ProfileStackParamList, 'About'>;
 
@@ -82,13 +74,18 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
                label: 'Web Sitesi',
                value: 'www.myapp.com',
                icon: ExternalLink,
-               action: () => Linking.openURL('https://www.myapp.com'),
+               action: () =>
+                  Alert.alert('Web Sitesi', 'www.myapp.com\n\nWeb sitesi bilgisi gösterildi.'),
             },
             {
                label: 'E-posta',
                value: 'info@myapp.com',
                icon: Mail,
-               action: () => Linking.openURL('mailto:info@myapp.com'),
+               action: () =>
+                  Alert.alert(
+                     'İletişim E-postası',
+                     'info@myapp.com\n\nE-posta adresi bilgisi gösterildi.',
+                  ),
             },
          ],
       },
@@ -134,52 +131,82 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
 
    // Social media links
    const socialLinks = [
-      { icon: Github, url: 'https://github.com/myapp', label: 'GitHub' },
-      { icon: Twitter, url: 'https://twitter.com/myapp', label: 'Twitter' },
+      { icon: Mail, url: 'https://github.com/myapp', label: 'GitHub' },
+      { icon: Mail, url: 'https://twitter.com/myapp', label: 'Twitter' },
       { icon: Mail, url: 'mailto:social@myapp.com', label: 'E-posta' },
    ];
 
    // Handle legal document viewing
    const handleLegalDocument = useCallback((type: string) => {
-      const urls = {
-         privacy: 'https://myapp.com/privacy',
-         terms: 'https://myapp.com/terms',
-         licenses: 'https://myapp.com/licenses',
-         kvkk: 'https://myapp.com/kvkk',
+      const documents = {
+         privacy: {
+            title: 'Gizlilik Politikası',
+            content:
+               'Kişisel verilerinizi korumak için gerekli tüm önlemleri alıyoruz. Verileriniz güvenle saklanır ve üçüncü taraflarla paylaşılmaz.',
+         },
+         terms: {
+            title: 'Kullanım Şartları',
+            content:
+               'Uygulamayı kullanarak bu şartları kabul etmiş sayılırsınız. Uygulama sadece yasal amaçlar için kullanılmalıdır.',
+         },
+         licenses: {
+            title: 'Açık Kaynak Lisansları',
+            content:
+               'Bu uygulama React Native, Lucide Icons ve diğer açık kaynak kütüphaneleri kullanmaktadır. MIT lisansı altında geliştirilmiştir.',
+         },
+         kvkk: {
+            title: 'KVKK Uyumluluğu',
+            content:
+               'Uygulamamız KVKK (Kişisel Verilerin Korunması Kanunu) gerekliliklerine tam uyumludur. Verileriniz güvenle işlenir.',
+         },
       };
 
-      Linking.openURL(urls[type as keyof typeof urls]);
+      const doc = documents[type as keyof typeof documents];
+      Alert.alert(doc.title, doc.content, [{ text: 'Tamam', style: 'default' }]);
    }, []);
 
    // Handle app sharing
-   const handleShareApp = useCallback(async () => {
-      try {
-         await Share.share({
-            message: 'MyApp - Harika bir mobil uygulama! İndir ve dene: https://myapp.com/download',
-            title: "MyApp'i Paylaş",
-         });
-      } catch (error) {
-         Alert.alert('Hata', 'Paylaşım başarısız oldu.');
-      }
+   const handleShareApp = useCallback(() => {
+      Alert.alert(
+         'Uygulamayı Paylaş',
+         'MyApp - Harika bir mobil uygulama!\n\nPaylaşım özelliği aktif edildi.',
+         [{ text: 'Tamam', style: 'default' }],
+      );
    }, []);
 
    // Handle app rating
    const handleRateApp = useCallback(() => {
-      Alert.alert('Uygulamayı Değerlendir', "MyApp'i App Store'da değerlendirmek ister misiniz?", [
-         { text: 'Şimdi Değil', style: 'cancel' },
-         {
-            text: 'Değerlendir',
-            onPress: () => Linking.openURL('https://apps.apple.com/app/myapp'),
-         },
-      ]);
+      Alert.alert(
+         'Uygulamayı Değerlendir',
+         "MyApp'i beğendiniz mi? Değerlendirmeniz bizim için çok önemli!\n\nDeğerlendirme özelliği aktif edildi.",
+         [{ text: 'Tamam', style: 'default' }],
+      );
    }, []);
 
    // Handle feedback
    const handleSendFeedback = useCallback(() => {
-      const subject = 'MyApp Geri Bildirim';
-      const body = `MyApp v1.0.0 için geri bildirimim:\n\n`;
-      Linking.openURL(
-         `mailto:feedback@myapp.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+      Alert.alert(
+         'Geri Bildirim Gönder',
+         'Görüşlerinizi bizimle paylaşın!\n\nE-posta: feedback@myapp.com\n\nGeri bildirim özelliği aktif edildi.',
+         [{ text: 'Tamam', style: 'default' }],
+      );
+   }, []);
+
+   // Handle social media links
+   const handleSocialLink = useCallback((social: { label: string; url: string }) => {
+      Alert.alert(
+         social.label,
+         `${social.label} sayfamızı ziyaret edin!\n\n${social.url}\n\nSosyal medya bağlantısı gösterildi.`,
+         [{ text: 'Tamam', style: 'default' }],
+      );
+   }, []);
+
+   // Handle acknowledgments
+   const handleAcknowledments = useCallback(() => {
+      Alert.alert(
+         'Teşekkürler & Kaynaklar',
+         'Bu uygulamanın geliştirilmesinde emeği geçen herkese teşekkür ederiz.\n\n• React Native Community\n• Lucide Icons\n• NativeWind\n• Ve tüm açık kaynak katkıcıları',
+         [{ text: 'Tamam', style: 'default' }],
       );
    }, []);
 
@@ -189,13 +216,9 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
          {/* Header with Logo - Otomatik tema switching */}
          <View className="items-center px-4 pt-6 pb-6">
             <View className="w-24 h-24 rounded-3xl items-center justify-center mb-4 bg-appTransition">
-               <Image
+               <ImageComponent
                   source={require('@assets/images/nav_logo.png')}
-                  style={{
-                     width: 60,
-                     height: 60,
-                     tintColor: 'rgb(var(--color-app-icon))', // CSS variable
-                  }}
+                  className="text-appIcon w-24 h-24 rounded-3xl items-center justify-center mb-4 bg-appTransition"
                   resizeMode="contain"
                />
             </View>
@@ -215,48 +238,30 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
          <View className="px-4 mb-6">
             <View className="flex-row justify-around">
                <TouchableOpacity
-                  className="flex-1 mx-1 p-4 rounded-xl items-center bg-appCardBackground"
-                  style={{
-                     shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                     elevation: 2,
-                     borderWidth: 1,
-                     borderColor: 'rgb(var(--color-app-border))',
-                  }}
+                  className="shadow-md border border-appBorder flex-1 mx-1 p-4 rounded-xl items-center bg-appCardBackground"
                   onPress={handleRateApp}
                   activeOpacity={0.7}>
-                  <Star size={24} color="rgb(var(--color-app-button))" strokeWidth={2} />
+                  <IconComponent Icon={Star} size={24} className="text-appIcon" />
                   <Text className="text-appCardText font-appFont font-medium text-sm mt-2 text-center">
                      Değerlendir
                   </Text>
                </TouchableOpacity>
 
                <TouchableOpacity
-                  className="flex-1 mx-1 p-4 rounded-xl items-center bg-appCardBackground"
-                  style={{
-                     shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                     elevation: 2,
-                     borderWidth: 1,
-                     borderColor: 'rgb(var(--color-app-border))',
-                  }}
+                  className="shadow-md border border-appBorder flex-1 mx-1 p-4 rounded-xl items-center bg-appCardBackground"
                   onPress={handleShareApp}
                   activeOpacity={0.7}>
-                  <Share2 size={24} color="rgb(var(--color-app-indicator))" strokeWidth={2} />
+                  <IconComponent Icon={Share2} size={24} className="text-appIcon" />
                   <Text className="text-appCardText font-appFont font-medium text-sm mt-2 text-center">
                      Paylaş
                   </Text>
                </TouchableOpacity>
 
                <TouchableOpacity
-                  className="flex-1 mx-1 p-4 rounded-xl items-center bg-appCardBackground"
-                  style={{
-                     shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                     elevation: 2,
-                     borderWidth: 1,
-                     borderColor: 'rgb(var(--color-app-border))',
-                  }}
+                  className="shadow-md border border-appBorder flex-1 mx-1 p-4 rounded-xl items-center bg-appCardBackground"
                   onPress={handleSendFeedback}
                   activeOpacity={0.7}>
-                  <Heart size={24} color="rgb(var(--color-app-error))" strokeWidth={2} />
+                  <IconComponent Icon={Heart} size={24} className="text-appError" />
                   <Text className="text-appCardText font-appFont font-medium text-sm mt-2 text-center">
                      Geri Bildirim
                   </Text>
@@ -271,14 +276,7 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
                   {section.title}
                </Text>
 
-               <View
-                  className="bg-appCardBackground rounded-xl p-4"
-                  style={{
-                     shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                     elevation: 2,
-                     borderWidth: 1,
-                     borderColor: 'rgb(var(--color-app-border))',
-                  }}>
+               <View className="shadow-md border border-appBorder bg-appCardBackground rounded-xl p-4">
                   {section.items.map((item, index) => {
                      const IconComponent = item.icon;
 
@@ -296,9 +294,9 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
                               {IconComponent && (
                                  <View className="mr-3">
                                     <IconComponent
+                                       Icon={item.icon}
                                        size={18}
-                                       color="rgb(var(--color-app-card-text))"
-                                       strokeWidth={2}
+                                       className="text-appCardText"
                                     />
                                  </View>
                               )}
@@ -320,10 +318,10 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
                               </Text>
 
                               {item.action && (
-                                 <ChevronRight
+                                 <IconComponent
+                                    Icon={ChevronRight}
                                     size={16}
-                                    color="rgb(var(--color-app-button))"
-                                    strokeWidth={2}
+                                    className="text-appButton"
                                  />
                               )}
                            </View>
@@ -340,14 +338,7 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
                Geliştirici Ekibi
             </Text>
 
-            <View
-               className="bg-appCardBackground rounded-xl p-4"
-               style={{
-                  shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                  elevation: 2,
-                  borderWidth: 1,
-                  borderColor: 'rgb(var(--color-app-border))',
-               }}>
+            <View className="shadow-md border border-appBorder bg-appCardBackground rounded-xl p-4">
                {teamMembers.map((member, index) => (
                   <View
                      key={member.id}
@@ -356,7 +347,7 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
                         ${index < teamMembers.length - 1 ? 'border-b border-appBorderColor/20' : ''}
                      `}>
                      <View className="w-10 h-10 rounded-full items-center justify-center mr-3 bg-appTransition">
-                        <Users size={18} color="rgb(var(--color-app-icon))" strokeWidth={2} />
+                        <IconComponent Icon={Users} size={18} className="text-appIcon" />
                      </View>
 
                      <View className="flex-1">
@@ -380,25 +371,15 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
 
             <View className="flex-row justify-around">
                {socialLinks.map((social, index) => {
-                  const IconComponent = social.icon;
+                  const Icon = social.icon;
 
                   return (
                      <TouchableOpacity
                         key={index}
-                        className="flex-1 mx-1 p-4 rounded-xl items-center bg-appCardBackground"
-                        style={{
-                           shadowColor: 'rgb(var(--color-app-transparent) / 0.3)',
-                           elevation: 2,
-                           borderWidth: 1,
-                           borderColor: 'rgb(var(--color-app-border))',
-                        }}
-                        onPress={() => Linking.openURL(social.url)}
+                        className="shadow-md border border-appBorder flex-1 mx-1 p-4 rounded-xl items-center bg-appCardBackground"
+                        onPress={() => handleSocialLink(social)}
                         activeOpacity={0.7}>
-                        <IconComponent
-                           size={24}
-                           color="rgb(var(--color-app-icon))"
-                           strokeWidth={2}
-                        />
+                        <IconComponent Icon={Icon} size={24} className="text-appIcon" />
                         <Text className="text-appCardText font-appFont font-medium text-sm mt-2 text-center">
                            {social.label}
                         </Text>
@@ -412,7 +393,7 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
          <View className="px-4 py-8 items-center">
             <View className="flex-row items-center justify-center mb-2">
                <Text className="text-appIcon font-appFont text-center text-base">Made with </Text>
-               <Heart size={16} color="rgb(var(--color-app-error))" />
+               <IconComponent Icon={Heart} size={16} className="text-appError" />
                <Text className="text-appIcon font-appFont text-center text-base"> in Istanbul</Text>
             </View>
 
@@ -420,9 +401,7 @@ const AboutScreen: React.FC<ScreenProps> = ({ navigation }) => {
                © 2025 MyApp Technologies. Tüm hakları saklıdır.
             </Text>
 
-            <TouchableOpacity
-               className="mt-4"
-               onPress={() => Linking.openURL('https://myapp.com/acknowledgments')}>
+            <TouchableOpacity className="mt-4" onPress={handleAcknowledments}>
                <Text className="text-appButton font-appFont font-medium">
                   Teşekkürler & Kaynaklar →
                </Text>
